@@ -9,4 +9,47 @@
     <string name="create_game">CREATE GAME</string>
     <string name="continueText">CONTINUE</string>
     <string name="username">Username:</string>
+    <string name="players">Players: 1/4</string>
+    <string name="items">Items</string>
+    <string name="colors">Colors</string>
+    <string name="points">Points</string>
+    <string name="dark_green" />
+    <string name="light_green" />
+    <string name="yellow" />
+    <string name="orange" />
+    <string name="red" />
+    <string name="pink" />
+    <string name="violet" />
+    <string name="blue" />
+    <string name="player1">Player 1</string>
+    <string name="player2">Player 2</string>
+    <string name="player3">Player 3</string>
+    <string name="player4">Player 4</string>
+    <string name="fast_slow">fast/slow</string>
+    <string name="thick_thin">thick/thin</string>
+    <string name="more_less_holes">+/- holes</string>
+    <string name="reverse">reverse</string>
+    <string name="go_through_wall">no wall</string>
+    <string name="start_game">Start Game</string>
+
+    <string-array name="points_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+    <string name="right">RIGHT</string>
+    <string name="left">LEFT</string>
+    <string name="stop">STOP</string>
 </resources>

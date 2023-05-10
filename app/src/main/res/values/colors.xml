@@ -12,4 +12,6 @@
     <color name="neon_green">#39FF14</color>
     <color name="neon_pink">#FF10F0</color>
     <color name="neon_red">#FF3131</color>
+    <color name="red">#FF0000</color>
+
 </resources>

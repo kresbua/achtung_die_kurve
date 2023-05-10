@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".GameQueue">
+
+    <!-- Äußere Guideline Oben -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/content_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <!-- Zweite Guideline Oben -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/content_top_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.18" />
+
+    <!-- Äußere Guideline Unten -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/content_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <!-- Äußere Guideline Links -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/content_left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <!-- Äußere Guideline Rechts -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/content_right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.98" />
+
+    <!-- Innere Guideline Players -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col1_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.32" />
+
+    <!-- Innere Guideline Colors links -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col21_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <!-- Innere Guideline Colors rechts -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col2_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.51" />
+
+
+    <!-- Innere Guideline Points links -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col31_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <!-- Innere Guideline Points rechts -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col3_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.69" />
+
+    <!-- Innere Guideline Items links -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col4_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <!-- Innere Guideline Items_Content links -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col4_guidelinecontent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.72" />
+
+    <!-- Innere Guideline Items_Content rechts -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col4_guidelinecontent2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.96" />
+
+    <!-- Innere Guideline Colors-->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row1_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.19" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row2_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.29" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row2_2_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.31" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player1_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.375" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player2_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.395" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player2_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.58" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player3_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player3_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.785" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player4_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.805" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row3_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.41" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row3_2_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.43" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row4_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.53" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row4_2_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row5_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row5_2_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.67" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row6_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.77" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row7_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.79" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/row8_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.89" />
+
+    <TextView
+        android:id="@+id/players"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textSize="25sp"
+        android:gravity="center|center_vertical"
+        android:text="@string/players"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:fontFamily="@font/retro_gaming"
+        android:background="@drawable/custom_border_titles"
+        app:layout_constraintBottom_toTopOf="@+id/content_top_guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/col1_guideline"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/content_top_guideline"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/items"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/custom_border_titles"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:text="@string/items"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/content_top_guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/content_right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col4_guideline"
+        app:layout_constraintTop_toTopOf="@+id/content_top_guideline" />
+
+    <TextView
+        android:id="@+id/colors"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/custom_border_titles"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:text="@string/colors"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/content_top_guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/col2_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col21_guideline"
+        app:layout_constraintTop_toTopOf="@+id/content_top_guideline" />
+
+    <TextView
+        android:id="@+id/points"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/custom_border_titles"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:text="@string/points"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/content_top_guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/col3_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col31_guideline"
+        app:layout_constraintTop_toTopOf="@+id/content_top_guideline" />
+
+    <Button
+        android:id="@+id/light_green"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#1CFF06"
+        android:text="@string/light_green"
+        app:layout_constraintBottom_toTopOf="@+id/row2_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col2_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col21_guideline"
+        app:layout_constraintTop_toTopOf="@+id/row1_guideline" />
+
+    <Button
+        android:id="@+id/yellow"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#FFFF00"
+        android:text="@string/yellow"
+        app:layout_constraintBottom_toTopOf="@+id/row3_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col2_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col21_guideline"
+        app:layout_constraintTop_toTopOf="@+id/row2_2_guideline" />
+
+    <Button
+        android:id="@+id/orange"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#db7800"
+        android:text="@string/orange"
+        app:layout_constraintBottom_toTopOf="@+id/row4_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col2_guideline"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="@+id/col21_guideline"
+        app:layout_constraintTop_toTopOf="@+id/row3_2_guideline"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/red"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#FF1212"
+        android:text="@string/red"
+        app:layout_constraintBottom_toTopOf="@+id/row5_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col2_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col21_guideline"
+        app:layout_constraintTop_toTopOf="@+id/row4_2_guideline" />
+
+    <Button
+        android:id="@+id/pink"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#FF06FB"
+        android:text="@string/pink"
+        app:layout_constraintBottom_toTopOf="@+id/row6_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col2_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col21_guideline"
+        app:layout_constraintTop_toTopOf="@+id/row5_2_guideline" />
+
+    <Button
+        android:id="@+id/blue"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#006CFF"
+        android:text="@string/blue"
+        app:layout_constraintBottom_toTopOf="@+id/row8_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col2_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col21_guideline"
+        app:layout_constraintTop_toTopOf="@+id/row7_guideline" />
+
+    <TextView
+        android:id="@+id/player1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custom_border_players"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="25dp"
+        android:paddingBottom="25dp"
+        android:text="@string/player1"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/player1_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col1_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/row1_guideline" />
+
+    <TextView
+        android:id="@+id/player2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custom_border_players"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="25dp"
+        android:paddingBottom="25dp"
+        android:text="@string/player2"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/player2_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col1_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/player2_top_guideline" />
+
+    <TextView
+        android:id="@+id/player3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custom_border_players"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="25dp"
+        android:paddingBottom="25dp"
+        android:text="@string/player3"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/player3_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col1_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/player3_top_guideline" />
+
+    <TextView
+        android:id="@+id/player4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custom_border_players"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="25dp"
+        android:paddingBottom="25dp"
+        android:text="@string/player4"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/content_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col1_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/player4_top_guideline" />
+
+    <Spinner
+        android:id="@+id/points_spinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:fontFamily="@font/retro_gaming"
+        android:textAlignment="center"
+        android:backgroundTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/row2_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col3_guideline"
+        app:layout_constraintStart_toStartOf="@+id/points"
+        app:layout_constraintTop_toTopOf="@+id/row1_guideline" />
+
+    <TextView
+        android:id="@+id/fast_slow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#00ff00"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/fast_slow"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/row2_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col4_guidelinecontent2"
+        app:layout_constraintStart_toStartOf="@+id/col4_guidelinecontent"
+        app:layout_constraintTop_toTopOf="@+id/row1_guideline" />
+
+    <TextView
+        android:id="@+id/thick_thin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#00ff00"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/thick_thin"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/row3_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col4_guidelinecontent2"
+        app:layout_constraintStart_toStartOf="@+id/col4_guidelinecontent"
+        app:layout_constraintTop_toTopOf="@+id/row2_2_guideline" />
+
+    <TextView
+        android:id="@+id/more_less_holes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#00ff00"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/more_less_holes"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/row4_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col4_guidelinecontent2"
+        app:layout_constraintStart_toStartOf="@+id/col4_guidelinecontent"
+        app:layout_constraintTop_toTopOf="@+id/row3_2_guideline" />
+
+    <TextView
+        android:id="@+id/reverse"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#00ff00"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/reverse"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/row5_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col4_guidelinecontent2"
+        app:layout_constraintStart_toStartOf="@+id/col4_guidelinecontent"
+        app:layout_constraintTop_toTopOf="@+id/row4_2_guideline" />
+
+    <TextView
+        android:id="@+id/no_wall"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custum_border_colors_items"
+        android:backgroundTint="#00ff00"
+        android:fontFamily="@font/retro_gaming"
+        android:gravity="center|center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/go_through_wall"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/row6_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/col4_guidelinecontent2"
+        app:layout_constraintStart_toStartOf="@+id/col4_guidelinecontent"
+        app:layout_constraintTop_toTopOf="@+id/row5_2_guideline" />
+
+    <Button
+        android:id="@+id/start_game"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/retro_gaming"
+        android:text="@string/start_game"
+        android:backgroundTint="@color/neon_blue"
+        app:layout_constraintBottom_toTopOf="@+id/content_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/content_right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/col4_guideline"
+        app:layout_constraintTop_toTopOf="@+id/row7_guideline" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

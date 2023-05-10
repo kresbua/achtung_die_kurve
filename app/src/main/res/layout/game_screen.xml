@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".GameScreen">
+
+    <!-- Guideline Rand Rechts -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/content_right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <!-- Guideline Rand Links -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/content_left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <!-- Guideline Stop Unten -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/stop_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <!-- Guideline Steuerung Oben -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/buttons_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <!-- Guideline Canvas Oben -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/canvas_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <!-- Guideline Canvas Unten -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/canvas_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <!-- Guideline Canvas Links -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/canvas_left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <!-- Guideline Canvas Rechts -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/canvas_right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <Button
+        android:id="@+id/right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/right"
+        android:backgroundTint="@color/neon_blue"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/canvas_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/content_right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/canvas_right_guideline"
+        app:layout_constraintTop_toTopOf="@+id/buttons_top_guideline" />
+
+    <Button
+        android:id="@+id/left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/left"
+        android:backgroundTint="@color/neon_blue"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/canvas_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/canvas_left_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/buttons_top_guideline" />
+
+    <com.example.achtung_die_kurve.CanvasView
+        android:id="@+id/canvas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/canvas_bottom_guideline"
+        app:layout_constraintEnd_toEndOf="@+id/canvas_right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/canvas_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/canvas_top_guideline" />
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stop"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/stop_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/content_right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/canvas_right_guideline"
+        app:layout_constraintTop_toTopOf="@+id/canvas_top_guideline" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
