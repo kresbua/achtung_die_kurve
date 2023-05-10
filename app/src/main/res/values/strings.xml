@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Achtung_die_Kurve</string>
+    <string name="achtung_die_kurve">Achtung die Kurve!</string>
+    <string name="host_game">HOST GAME</string>
+    <string name="join_game">JOIN GAME</string>
+    <string name="game_name">Name:</string>
+    <string name="password">Password:</string>
+    <string name="privateText">Pvt:</string>
+    <string name="create_game">CREATE GAME</string>
+    <string name="continueText">CONTINUE</string>
+    <string name="username">Username:</string>
+</resources>

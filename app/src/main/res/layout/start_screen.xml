@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".StartScreen">
+
+
+    <!--Title Guidelines-->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/title_left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/title_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/title_right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".80" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/title_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".30" />
+
+
+
+    <!--Title-->
+
+    <TextView
+        android:id="@+id/gameTitle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/achtung_die_kurve"
+        android:autoSizeTextType="uniform"
+        android:gravity="center|center_vertical"
+        android:textColor="@color/neon_blue"
+        android:fontFamily="@font/retro_gaming"
+        app:layout_constraintBottom_toTopOf="@+id/title_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/title_right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/title_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/title_top_guideline" />
+
+
+    <!--Host-Game-Button Guidelines -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hostGameButton_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hostGameButton_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".60" />
+
+    <!--Buttons leteral Guidelines -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/buttons_right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/buttons_left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".65" />
+
+    <!--Host-Game-Button-->
+
+    <Button
+        android:id="@+id/hostGameButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/host_game"
+        android:autoSizeTextType="uniform"
+        android:textColor="@color/neon_green"
+        android:gravity="center|center_vertical"
+        android:background="@drawable/custom_green_border_button"
+        android:fontFamily="@font/retro_gaming"
+        app:layout_constraintBottom_toTopOf="@+id/hostGameButton_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/buttons_left_guideline"
+        app:layout_constraintStart_toStartOf="@+id/buttons_right_guideline"
+        app:layout_constraintTop_toTopOf="@+id/hostGameButton_top_guideline" />
+
+
+    <!--Join-Game-Button Guidelines -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/joinGameButton_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".70" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/joinGameButton_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".90" />
+
+
+    <!--Join-Game-Button-->
+
+    <Button
+        android:id="@+id/joinGameButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/join_game"
+        android:autoSizeTextType="uniform"
+        android:textColor="@color/neon_pink"
+        android:gravity="center|center_vertical"
+        android:background="@drawable/custom_pink_border_button"
+        android:fontFamily="@font/retro_gaming"
+        app:layout_constraintBottom_toTopOf="@+id/joinGameButton_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/buttons_left_guideline"
+        app:layout_constraintStart_toStartOf="@+id/buttons_right_guideline"
+        app:layout_constraintTop_toTopOf="@+id/joinGameButton_top_guideline" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
