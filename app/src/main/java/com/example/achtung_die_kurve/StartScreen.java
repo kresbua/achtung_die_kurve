@@ -181,6 +181,8 @@ public class StartScreen extends AppCompatActivity {
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         final ImageButton cancelButton = popupView.findViewById(R.id.cancelButton);
         final TableLayout availableGames = popupView.findViewById(R.id.availableGames);
+        final Button continueButton = popupView.findViewById(R.id.continueButton);
+
         Game exampleGame = new Game("Random", true, 2, "127.0.0.1", 800);
         int countGames = 1;
         Typeface retroFont = getResources().getFont(R.font.retro_gaming);
@@ -228,10 +230,15 @@ public class StartScreen extends AppCompatActivity {
                 availableGames.addView(tr);
             }
         }
+        continueButton.setOnClickListener(v -> continueButtonOnClick());
         cancelButton.setOnClickListener(view1 -> popupWindow.dismiss());
     }
 
     public void joinGameOnClick(View view, String option){
         openSetUsernamePopup(view, option);
+    }
+
+    public void continueButtonOnClick(){
+        setContentView(R.layout.start_screen);
     }
 }
