@@ -1,11 +1,7 @@
 package com.example.achtung_die_kurve;
 
-import android.util.JsonWriter;
-
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -13,16 +9,17 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
-public class GamePublisher {
+public class GameReceiver {
 
     private String inetAddress;
     private int port;
     private DatagramSocket datagramSocket;
     private Game myGame;
-    private boolean gameIsFull;
 
-    public boolean checkFreeAddresses(){
+    public ArrayList<Game> searchGames(){
+        ArrayList<Game> foundGames = new ArrayList<>();
         String addressPrefix = "224.0.0.";
         MulticastSocket tempSocket;
         byte[] buf;
@@ -38,16 +35,10 @@ public class GamePublisher {
                     tempSocket.receive(dp);
                     received = data(buf);
                     if(received.length() > 0){
-                        break;
+                        Gson gson = new Gson();
+                        foundGames.add(gson.fromJson(received, Game.class));
                     }
                 }
-
-                if(received.length() == 0){
-                    inetAddress = addressPrefix + i;
-                    tempSocket.close();
-                    return true;
-                }
-
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             } catch (SocketException e) {
@@ -59,38 +50,7 @@ public class GamePublisher {
                 tempSocket.close();
             }
         }
-        return false;
-    }
-
-    public void startPublishingGame(){
-        try {
-            InetAddress publicationAddress = InetAddress.getByName(inetAddress);
-            Runnable r = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        datagramSocket = new DatagramSocket();
-                        byte[] buf;
-                        String jsonInString = new Gson().toJson(myGame);
-                        buf = jsonInString.getBytes();
-                        while (!gameIsFull){
-                            DatagramPacket dp = new DatagramPacket(buf, buf.length, publicationAddress, 4446);
-                            datagramSocket.send(dp);
-                        }
-                        datagramSocket.close();
-
-                    } catch (SocketException e) {
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            };
-            new Thread(r).start();
-
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+        return foundGames;
     }
 
     public String data(byte[] a)

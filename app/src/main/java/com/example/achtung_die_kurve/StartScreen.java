@@ -24,6 +24,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.security.Identity;
+import java.util.ArrayList;
 
 
 public class StartScreen extends AppCompatActivity {
@@ -183,12 +184,12 @@ public class StartScreen extends AppCompatActivity {
         final TableLayout availableGames = popupView.findViewById(R.id.availableGames);
         final Button continueButton = popupView.findViewById(R.id.continueButton);
 
-        Game exampleGame = new Game("Random", true, 2, "127.0.0.1", 800);
-        int countGames = 1;
+        GameReceiver gameReceiver = new GameReceiver();
+        ArrayList<Game> foundGames = gameReceiver.searchGames();
         Typeface retroFont = getResources().getFont(R.font.retro_gaming);
 
-        if(countGames >= 0){ //Games available
-            for(int i=0; i < countGames; i++){
+        if(foundGames != null){ //Games available
+            for(Game game : foundGames){
                 TableRow tr = new TableRow(this);
                 tr.setBackgroundResource(R.drawable.custom_tablerow);
                 TableRow.LayoutParams tlparams = new TableRow.LayoutParams(
@@ -206,7 +207,7 @@ public class StartScreen extends AppCompatActivity {
                 gameName.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
                 gameName.setLayoutParams(tvparams);
                 gameName.setTypeface(retroFont);
-                gameName.setText(exampleGame.getGameName());
+                gameName.setText(game.getGameName());
                 gameName.setTextColor(getResources().getColor(R.color.neon_blue));
                 tr.addView(gameName);// add the column to the table row here
 
@@ -215,7 +216,7 @@ public class StartScreen extends AppCompatActivity {
                 status.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
                 status.setLayoutParams(tvparams);
                 status.setTypeface(retroFont);
-                status.setText(exampleGame.privacyStatusToString());
+                status.setText(game.privacyStatusToString());
                 status.setTextColor(getResources().getColor(R.color.neon_blue));
                 tr.addView(status);
 
@@ -224,7 +225,7 @@ public class StartScreen extends AppCompatActivity {
                 playerNumber.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
                 playerNumber.setLayoutParams(tvparams);
                 playerNumber.setTypeface(retroFont);
-                playerNumber.setText(exampleGame.getPlayerNumber() + "/4");
+                playerNumber.setText(game.getPlayerNumber() + "/4");
                 playerNumber.setTextColor(getResources().getColor(R.color.neon_blue));
                 tr.addView(playerNumber);
                 availableGames.addView(tr);
