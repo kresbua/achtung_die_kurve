@@ -3,6 +3,7 @@ package com.example.achtung_die_kurve;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class StartScreen extends AppCompatActivity {
     private String username;
     private String gameName;
     private String password;
+
+    private boolean isPrivate;
 
 
 
@@ -139,6 +142,11 @@ public class StartScreen extends AppCompatActivity {
     public void createGameButtonOnClick(PopupWindow popupWindow, EditText gameNameInput, EditText passwordInput){
         gameName = String.valueOf(gameNameInput.getText());
         password = String.valueOf(passwordInput.getText());
+        Game myGame = new Game(gameName, isPrivate, password);
+        Intent intent = new Intent(this, GameQueue.class);
+        intent.putExtra("myGame", myGame);
+        startActivity(intent);
+        setContentView(R.layout.game_queue);
         popupWindow.dismiss();
     }
 
@@ -148,11 +156,13 @@ public class StartScreen extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
                 if(isChecked){
+                    isPrivate = true;
                     passwordText.setAlpha(1.0f);
                     passwordInput.setAlpha(1.0f);
                     passwordInput.setFocusable(true);
                     passwordInput.setFocusable(View.FOCUSABLE);
                 }else{
+                    isPrivate = false;
                     passwordText.setAlpha(0.3f);
                     passwordInput.setAlpha(0.3f);
                     passwordInput.setFocusable(false);

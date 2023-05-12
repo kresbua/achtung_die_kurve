@@ -2,7 +2,9 @@ package com.example.achtung_die_kurve;
 
 import android.util.SparseBooleanArray;
 
-public class Game {
+import java.io.Serializable;
+
+public class Game implements Serializable {
 
     private String gameName;
     private boolean isPrivate;
@@ -10,12 +12,17 @@ public class Game {
     private String inetAddress;
     private int port;
 
-    public Game(String gameName, boolean isPrivate, int playerNumber, String inetAddress, int port) {
+    private String password;
+
+
+    public Game(String gameName, boolean isPrivate, String password) {
         this.gameName = gameName;
         this.isPrivate = isPrivate;
-        this.playerNumber = playerNumber;
-        this.inetAddress = inetAddress;
-        this.port = port;
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getGameName() {

@@ -15,6 +15,7 @@ import java.net.MulticastSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 public class GamePublisher {
@@ -25,43 +26,55 @@ public class GamePublisher {
     private DatagramSocket datagramSocket;
     private Game myGame;
     private boolean gameIsFull;
+    private String username;
 
     private boolean closeTCPSocket = false;
 
-    public boolean checkFreeAddresses(){
-        String addressPrefix = "224.0.0.";
-        MulticastSocket tempSocket = null;
-        byte[] buf;
-        String received = "";
-        for (int i = 10; i <= 30; i++){
-            try {
-                InetAddress tempAddress = InetAddress.getByName(addressPrefix + i);
-                tempSocket = new MulticastSocket(4446);
-                tempSocket.joinGroup(tempAddress);
-                buf = new byte[256];
-                for (int j = 0; j < 100; j++){
-                    DatagramPacket dp = new DatagramPacket(buf, buf.length);
-                    tempSocket.receive(dp);
-                    received = data(buf);
-                    if(received.length() > 0){
-                        break;
-                    }
-                }
-
-                if(received.length() == 0){
-                    inetAddressUDP = addressPrefix + i;
-                    tempSocket.close();
-                    return true;
-                }
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        tempSocket.close();
-        return false;
+    public GamePublisher(Game myGame){
+        this.myGame = myGame;
     }
 
+    public boolean checkFreeAddresses(){
+        boolean[] exitStatus = {false};
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                String addressPrefix = "224.0.0.";
+                MulticastSocket tempSocket = null;
+                byte[] buf;
+                for (int i = 10; i <= 30; i++){
+                    try {
+                        InetAddress tempAddress = InetAddress.getByName(addressPrefix + i);
+                        tempSocket = new MulticastSocket(4446);
+                        tempSocket.joinGroup(tempAddress);
+                        tempSocket.setSoTimeout(100);
+                        buf = new byte[256];
+                        for (int j = 0; j < 100; j++) {
+                            DatagramPacket dp = new DatagramPacket(buf, buf.length);
+                            tempSocket.receive(dp);
+                        }
+                    }catch (SocketTimeoutException e){
+                        inetAddressUDP = addressPrefix + i;
+                        exitStatus[0] = true;
+                        break;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                assert tempSocket != null;
+                tempSocket.close();
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return exitStatus[0];
+    }
     public void launchTCPServer(){
         if(checkFreeTCPAddresses()){
             Runnable r = new Runnable() {
@@ -78,6 +91,8 @@ public class GamePublisher {
                             socket = serverSocket.accept();
                             inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                             outputStream = new DataOutputStream(socket.getOutputStream());
+                            String playersUsername = inputStream.readUTF();
+                            handlePlayer(socket, inputStream, outputStream, playersUsername);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -97,6 +112,16 @@ public class GamePublisher {
         }
     }
 
+    public void handlePlayer(Socket socket, DataInputStream inputStream, DataOutputStream outputStream, String playersUsername){
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        };
+        new Thread(r).start();
+    }
+
 
     public boolean checkFreeTCPAddresses(){
         String addressPrefix = "225.0.0.";
@@ -106,7 +131,7 @@ public class GamePublisher {
             try {
                 Socket socket = new Socket();
                 socket.connect(new InetSocketAddress(addressPrefix + i, tcpPort), 2000); // Timeout nach 2 Sekunden
-                System.out.println("Adresse ist besitzt: " + addressPrefix + i + ":" + tcpPort);
+                System.out.println("Adresse ist besetzt: " + addressPrefix + i + ":" + tcpPort);
                 socket.close();
             } catch (Exception e) {
                 System.out.println("Adresse ist frei: " + addressPrefix + i + ":" + tcpPort);
@@ -123,31 +148,33 @@ public class GamePublisher {
     }
 
     public void startPublishingGame(){
-        try {
-            InetAddress publicationAddress = InetAddress.getByName(inetAddressUDP);
-            Runnable r = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        datagramSocket = new DatagramSocket();
-                        byte[] buf;
-                        String jsonInString = new Gson().toJson(myGame);
-                        buf = jsonInString.getBytes();
-                        while (!gameIsFull){
-                            DatagramPacket dp = new DatagramPacket(buf, buf.length, publicationAddress, 4446);
-                            datagramSocket.send(dp);
+        if(checkFreeAddresses()){
+            try {
+                InetAddress publicationAddress = InetAddress.getByName(inetAddressUDP);
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            datagramSocket = new DatagramSocket();
+                            byte[] buf;
+                            String jsonInString = new Gson().toJson(myGame);
+                            buf = jsonInString.getBytes();
+                            while (!gameIsFull){
+                                DatagramPacket dp = new DatagramPacket(buf, buf.length, publicationAddress, 4446);
+                                datagramSocket.send(dp);
+                            }
+                            datagramSocket.close();
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
-                        datagramSocket.close();
-
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
-                }
-            };
-            new Thread(r).start();
+                };
+                new Thread(r).start();
 
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

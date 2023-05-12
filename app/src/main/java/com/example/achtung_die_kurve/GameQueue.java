@@ -1,6 +1,8 @@
 package com.example.achtung_die_kurve;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +23,13 @@ public class GameQueue extends AppCompatActivity {
         );
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_queue);
+
+        Intent intent = getIntent();
+        Game myGame = (Game) getIntent().getSerializableExtra("myGame");
+
+        GamePublisher gamePublisher = new GamePublisher(myGame);
+
+        gamePublisher.startPublishingGame();
 
         Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.points_array, android.R.layout.simple_spinner_item);
