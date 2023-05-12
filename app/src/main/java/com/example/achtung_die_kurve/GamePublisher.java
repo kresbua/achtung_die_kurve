@@ -1,30 +1,36 @@
 package com.example.achtung_die_kurve;
 
-import android.util.JsonWriter;
-
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class GamePublisher {
 
-    private String inetAddress;
-    private int port;
+    private String inetAddressUDP;
+    private String inetAddressTCP;
+    private int tcpPort = 800;
     private DatagramSocket datagramSocket;
     private Game myGame;
     private boolean gameIsFull;
 
+    private boolean closeTCPSocket = false;
+
     public boolean checkFreeAddresses(){
         String addressPrefix = "224.0.0.";
-        MulticastSocket tempSocket;
+        MulticastSocket tempSocket = null;
         byte[] buf;
         String received = "";
         for (int i = 10; i <= 30; i++){
@@ -43,28 +49,82 @@ public class GamePublisher {
                 }
 
                 if(received.length() == 0){
-                    inetAddress = addressPrefix + i;
+                    inetAddressUDP = addressPrefix + i;
                     tempSocket.close();
                     return true;
                 }
 
-            } catch (UnknownHostException e) {
-                throw new RuntimeException(e);
-            } catch (SocketException e) {
-                throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            if(i == 30){
-                tempSocket.close();
+        }
+        tempSocket.close();
+        return false;
+    }
+
+    public void launchTCPServer(){
+        if(checkFreeTCPAddresses()){
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    ServerSocket serverSocket = null;
+                    Socket socket = null;
+                    DataInputStream inputStream = null;
+                    DataOutputStream outputStream = null;
+                    while (!closeTCPSocket){
+                        try {
+                            serverSocket = new ServerSocket(tcpPort);
+                            serverSocket.bind(new InetSocketAddress(inetAddressTCP, tcpPort));
+                            socket = serverSocket.accept();
+                            inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                            outputStream = new DataOutputStream(socket.getOutputStream());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    try {
+                        assert socket != null;
+                        socket.close();
+                        serverSocket.close();
+                        inputStream.close();
+                        outputStream.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            new Thread(r).start();
+        }
+    }
+
+
+    public boolean checkFreeTCPAddresses(){
+        String addressPrefix = "225.0.0.";
+        boolean addressIsFree = false;
+
+        for (int i = 10; i < 30; i++){
+            try {
+                Socket socket = new Socket();
+                socket.connect(new InetSocketAddress(addressPrefix + i, tcpPort), 2000); // Timeout nach 2 Sekunden
+                System.out.println("Adresse ist besitzt: " + addressPrefix + i + ":" + tcpPort);
+                socket.close();
+            } catch (Exception e) {
+                System.out.println("Adresse ist frei: " + addressPrefix + i + ":" + tcpPort);
+                inetAddressTCP = addressPrefix + i;
+                addressIsFree = true;
+                break;
             }
         }
-        return false;
+        if(!addressIsFree){
+            System.out.println("Es konnten keine freien Adressen gefunden werden!");
+            return false;
+        }
+        return true;
     }
 
     public void startPublishingGame(){
         try {
-            InetAddress publicationAddress = InetAddress.getByName(inetAddress);
+            InetAddress publicationAddress = InetAddress.getByName(inetAddressUDP);
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
@@ -79,8 +139,6 @@ public class GamePublisher {
                         }
                         datagramSocket.close();
 
-                    } catch (SocketException e) {
-                        throw new RuntimeException(e);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
