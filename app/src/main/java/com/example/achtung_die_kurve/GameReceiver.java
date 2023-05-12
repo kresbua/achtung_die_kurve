@@ -26,7 +26,7 @@ public class GameReceiver {
             @Override
             public void run() {
                 System.out.println("THREAD CALLED!");
-                String addressPrefix = "10.10.30.";
+                String addressPrefix = "224.0.0.";
                 MulticastSocket tempSocket = null;
                 byte[] buf;
                 String received = "";
@@ -41,6 +41,7 @@ public class GameReceiver {
                         tempSocket.receive(dp);
                         received = data(buf);
                         if (received.length() > 0) {
+                            System.out.println("------GAME FOUND!!!!-------");
                             Gson gson = new Gson();
                             foundGames.add(gson.fromJson(received, Game.class));
                         }
