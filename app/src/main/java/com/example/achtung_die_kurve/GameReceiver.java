@@ -26,7 +26,7 @@ public class GameReceiver {
             @Override
             public void run() {
                 System.out.println("THREAD CALLED!");
-                String addressPrefix = "224.0.0.";
+                String addressPrefix = "10.10.30.";
                 MulticastSocket tempSocket = null;
                 byte[] buf;
                 String received = "";

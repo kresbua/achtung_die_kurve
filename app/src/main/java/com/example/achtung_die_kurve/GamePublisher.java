@@ -40,7 +40,7 @@ public class GamePublisher {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                String addressPrefix = "224.0.0.";
+                String addressPrefix = "10.10.30.";
                 MulticastSocket tempSocket = null;
                 byte[] buf;
                 for (int i = 10; i <= 30; i++){
