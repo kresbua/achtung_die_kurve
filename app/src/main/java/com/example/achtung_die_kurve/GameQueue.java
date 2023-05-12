@@ -25,10 +25,8 @@ public class GameQueue extends AppCompatActivity {
         setContentView(R.layout.game_queue);
 
         Intent intent = getIntent();
-        Game myGame = (Game) getIntent().getSerializableExtra("myGame");
-
+        Game myGame = (Game) intent.getSerializableExtra("myGame");
         GamePublisher gamePublisher = new GamePublisher(myGame);
-
         gamePublisher.startPublishingGame();
 
         Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);

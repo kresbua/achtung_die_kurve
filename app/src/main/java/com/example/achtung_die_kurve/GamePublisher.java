@@ -25,7 +25,7 @@ public class GamePublisher {
     private int tcpPort = 800;
     private DatagramSocket datagramSocket;
     private Game myGame;
-    private boolean gameIsFull;
+    private boolean gameIsFull = false;
     private String username;
 
     private boolean closeTCPSocket = false;
@@ -149,6 +149,7 @@ public class GamePublisher {
 
     public void startPublishingGame(){
         if(checkFreeAddresses()){
+            System.out.println("START PUBLISHING!");
             try {
                 InetAddress publicationAddress = InetAddress.getByName(inetAddressUDP);
                 Runnable r = new Runnable() {
