@@ -36,8 +36,6 @@ public class StartScreen extends AppCompatActivity {
 
     private boolean isPrivate;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
