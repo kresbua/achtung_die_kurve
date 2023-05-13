@@ -24,22 +24,35 @@ public class GameQueue extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_queue);
 
-        Intent intent = getIntent();
-        Game myGame = (Game) intent.getSerializableExtra("myGame");
-        GamePublisher gamePublisher = new GamePublisher(myGame);
-        gamePublisher.startPublishingGame();
+        final TextView host = findViewById(R.id.player1);
+        final TextView player2 = findViewById(R.id.player2);
+        final TextView player3 = findViewById(R.id.player3);
+        final TextView player4 = findViewById(R.id.player4);
 
-        Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.points_array, android.R.layout.simple_spinner_item);
+        Intent intent = getIntent();
+        Player myPlayer = (Player) intent.getSerializableExtra("myPlayer");
+        if(myPlayer.isHost()){
+            Game myGame = (Game) intent.getSerializableExtra("myGame");
+            GamePublisher gamePublisher = new GamePublisher(myGame);
+            gamePublisher.startPublishingGame();
+            host.setText(myPlayer.getUsername());
+            myGame.addPlayer(myPlayer);
+        }else{
+            //to be continued
+        }
+
+
+        final Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.points_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         points_spinner.setAdapter(adapter);
 
         //Items holen + onClickListener setzten (Farbe ändern und Boolean setzen)
-        TextView fast_slow = findViewById(R.id.fast_slow);
-        TextView thick_thin = findViewById(R.id.thick_thin);
-        TextView more_less_holes = findViewById(R.id.more_less_holes);
-        TextView reverse = findViewById(R.id.reverse);
-        TextView no_wall = findViewById(R.id.no_wall);
+        final TextView fast_slow = findViewById(R.id.fast_slow);
+        final TextView thick_thin = findViewById(R.id.thick_thin);
+        final TextView more_less_holes = findViewById(R.id.more_less_holes);
+        final TextView reverse = findViewById(R.id.reverse);
+        final TextView no_wall = findViewById(R.id.no_wall);
 
         View.OnClickListener onItemClick = new View.OnClickListener() {
             @Override

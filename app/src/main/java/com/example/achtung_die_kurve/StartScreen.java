@@ -141,8 +141,10 @@ public class StartScreen extends AppCompatActivity {
         gameName = String.valueOf(gameNameInput.getText());
         password = String.valueOf(passwordInput.getText());
         Game myGame = new Game(gameName, isPrivate, password);
+        Player myPlayer = new Player(username, true);
         Intent intent = new Intent(this, GameQueue.class);
         intent.putExtra("myGame", myGame);
+        intent.putExtra("myPlayer", myPlayer);
         startActivity(intent);
         setContentView(R.layout.game_queue);
         popupWindow.dismiss();
@@ -239,7 +241,7 @@ public class StartScreen extends AppCompatActivity {
                 availableGames.addView(tr);
             }
         }
-        continueButton.setOnClickListener(v -> continueButtonOnClick());
+        continueButton.setOnClickListener(v -> continueButtonOnClick(popupWindow));
         cancelButton.setOnClickListener(view1 -> popupWindow.dismiss());
     }
 
@@ -247,7 +249,12 @@ public class StartScreen extends AppCompatActivity {
         openSetUsernamePopup(view, option);
     }
 
-    public void continueButtonOnClick(){
-        setContentView(R.layout.start_screen);
+    public void continueButtonOnClick(PopupWindow popupWindow){
+        Player myPlayer = new Player(username, false);
+        Intent intent = new Intent(this, GameQueue.class);
+        intent.putExtra("myPlayer", myPlayer);
+        startActivity(intent);
+        setContentView(R.layout.game_queue);
+        popupWindow.dismiss();
     }
 }

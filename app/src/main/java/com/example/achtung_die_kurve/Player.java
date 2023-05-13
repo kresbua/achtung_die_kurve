@@ -3,10 +3,11 @@ package com.example.achtung_die_kurve;
 import android.graphics.Color;
 import android.util.Pair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements Serializable {
 
     private String username;
     private String ip;
@@ -20,9 +21,8 @@ public class Player {
     private int speed;
     private boolean reverse;
 
-    public Player(String username, String ip, boolean isHost) {
+    public Player(String username, boolean isHost) {
         this.username = username;
-        this.ip = ip;
         this.isHost = isHost;
         coordinates = new ArrayList<>();
     }
