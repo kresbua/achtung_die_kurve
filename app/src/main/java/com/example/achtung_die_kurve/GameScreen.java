@@ -17,8 +17,6 @@ import java.util.TimerTask;
 public class GameScreen extends AppCompatActivity {
     private CanvasView canvasView;
     private Timer timer;
-    private int canvasHeight;
-    private int canvasWidth;
 
     private int circleSize = 10;
     private int currentY = 800;
@@ -28,6 +26,7 @@ public class GameScreen extends AppCompatActivity {
     private List<PointF> points;
 
     private float collisionRadius;
+    private boolean collision = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,17 +95,13 @@ public class GameScreen extends AppCompatActivity {
 
                         //Kollisionserkennung mit den Rändern
                         if (currentY <= circleSize/2 + 5) {
-                            currentX = 400;
-                            currentY = 800;
+                            collision = true;
                         } else if (currentY >= canvasView.getHeight() - circleSize/2 - 7) {
-                            currentX = 400;
-                            currentY = 800;
+                            collision = true;
                         } else if (currentX >= canvasView.getWidth() - circleSize/2 - 7) {
-                            currentX = 400;
-                            currentY = 800;
+                            collision = true;
                         } else if (currentX <= circleSize/2 + 7) {
-                            currentX = 400;
-                            currentY = 800;
+                            collision = true;
                         }
 
                         //Kollisionserkennung mit sich selbst
@@ -122,14 +117,21 @@ public class GameScreen extends AppCompatActivity {
 
                             if (distanceX < collisionRadius + circleSize && distanceY < collisionRadius + circleSize && !isCloseToLastTwoPoints(currentPoint, points)) {
                                 // Kollision mit sich selbst erkannt
-                                currentX = 400;
-                                currentY = 800;
+                                collision = true;
                                 break;
                             }
                         }
 
                         points.add(currentPoint);
 
+                        if(collision){
+                            canvasView.addCircle(posX, posY);
+                            canvasView.clearCanvas();
+                            points.clear();
+                            currentX = 200;
+                            currentY = 800;
+                            collision = false;
+                        }
                     }
                 });
             }
