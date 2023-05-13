@@ -1,9 +1,8 @@
 package com.example.achtung_die_kurve;
 
-import android.util.SparseBooleanArray;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game implements Serializable {
 
@@ -16,12 +15,22 @@ public class Game implements Serializable {
 
     private ArrayList<Player> players;
 
+    private HashMap<String, Boolean> items;
 
     public Game(String gameName, boolean isPrivate, String password) {
         this.gameName = gameName;
         this.isPrivate = isPrivate;
         this.password = password;
         players = new ArrayList<>();
+        items = new HashMap<String, Boolean>();
+    }
+
+    public HashMap<String, Boolean> getItems(){
+        return items;
+    }
+
+    public void addItem(String itemName, Boolean active){
+        items.put(itemName, active);
     }
 
     public void addPlayer(Player player){

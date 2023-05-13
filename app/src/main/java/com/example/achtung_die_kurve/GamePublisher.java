@@ -2,7 +2,6 @@ package com.example.achtung_die_kurve;
 
 import com.google.gson.Gson;
 
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

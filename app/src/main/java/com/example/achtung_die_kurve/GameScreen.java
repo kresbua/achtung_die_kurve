@@ -2,13 +2,10 @@ package com.example.achtung_die_kurve;
 
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -130,6 +127,8 @@ public class GameScreen extends AppCompatActivity {
                             points.clear();
                             currentX = 200;
                             currentY = 800;
+                            directionX = 0;
+                            directionY = -10;
                             collision = false;
                         }
                     }

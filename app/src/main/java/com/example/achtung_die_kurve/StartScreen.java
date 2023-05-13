@@ -55,7 +55,6 @@ public class StartScreen extends AppCompatActivity {
 
     }
 
-
     public void hostGameOnClick(View view, String option){
         openSetUsernamePopup(view, option);
     }

@@ -1,19 +1,19 @@
 package com.example.achtung_die_kurve;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class GameQueue extends AppCompatActivity {
 
+    private Game myGame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -24,6 +24,7 @@ public class GameQueue extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_queue);
 
+        //Spieler-Textviews holen
         final TextView host = findViewById(R.id.player1);
         final TextView player2 = findViewById(R.id.player2);
         final TextView player3 = findViewById(R.id.player3);
@@ -32,49 +33,109 @@ public class GameQueue extends AppCompatActivity {
         Intent intent = getIntent();
         Player myPlayer = (Player) intent.getSerializableExtra("myPlayer");
         if(myPlayer.isHost()){
-            Game myGame = (Game) intent.getSerializableExtra("myGame");
+            //Game-Objekt holen
+            myGame = (Game) intent.getSerializableExtra("myGame");
+
+            //Game für andere publishen
             GamePublisher gamePublisher = new GamePublisher(myGame);
             gamePublisher.startPublishingGame();
+
+            //Host Username setzen
             host.setText(myPlayer.getUsername());
+
+            //Items + Booleans zur Hashmap hinzufügen
+            myGame.getItems().put("fast_slow", true);
+            myGame.getItems().put("thick_thin", true);
+            myGame.getItems().put("more_less_holes", true);
+            myGame.getItems().put("reverse", true);
+            myGame.getItems().put("no_wall", true);
+
+            //Player dem Game hinzufügen
             myGame.addPlayer(myPlayer);
         }else{
             //to be continued
         }
-
 
         final Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.points_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         points_spinner.setAdapter(adapter);
 
-        //Items holen + onClickListener setzten (Farbe ändern und Boolean setzen)
+        //Item-Textviews holen
         final TextView fast_slow = findViewById(R.id.fast_slow);
         final TextView thick_thin = findViewById(R.id.thick_thin);
         final TextView more_less_holes = findViewById(R.id.more_less_holes);
         final TextView reverse = findViewById(R.id.reverse);
         final TextView no_wall = findViewById(R.id.no_wall);
 
-        View.OnClickListener onItemClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View item) {
-                setItem((TextView) item);
-            }
-        };
+        //onClickListener setzten
+        fast_slow.setOnClickListener(view -> onItemClick(fast_slow));
+        thick_thin.setOnClickListener(view -> onItemClick(thick_thin));
+        more_less_holes.setOnClickListener(view -> onItemClick(more_less_holes));
+        reverse.setOnClickListener(view -> onItemClick(reverse));
+        no_wall.setOnClickListener(view -> onItemClick(no_wall));
 
-        fast_slow.setOnClickListener(onItemClick);
-        thick_thin.setOnClickListener(onItemClick);
-        more_less_holes.setOnClickListener(onItemClick);
-        reverse.setOnClickListener(onItemClick);
-        no_wall.setOnClickListener(onItemClick);
+        //Start-Button holen
+        Button start = findViewById(R.id.start_game);
+
+        //onClickListener setzen
+        start.setOnClickListener(view -> onStartClick());
     }
-    boolean test = true; //nur zum probieren, funzt nit richtig
-    private void setItem(TextView item){
-        if(test){ //aktuellen Boolean holen
-            item.setTextColor(Color.parseColor("#FF1212"));
-            test = false;
-        }else{
-            item.setTextColor(Color.parseColor("#000000"));
-            test = true;
+    private void onItemClick(TextView item){
+
+        switch(getResources().getResourceEntryName(item.getId())){
+            case "fast_slow":
+                if(myGame.getItems().get("fast_slow")){
+                    myGame.getItems().put("fast_slow", false);
+                    item.setTextColor(Color.parseColor("#FF1212"));
+                }else{
+                    myGame.getItems().put("fast_slow", true);
+                    item.setTextColor(Color.parseColor("#000000"));
+                }
+                break;
+            case "thick_thin":
+                if(myGame.getItems().get("thick_thin")){
+                    myGame.getItems().put("thick_thin", false);
+                    item.setTextColor(Color.parseColor("#FF1212"));
+                }else{
+                    myGame.getItems().put("thick_thin", true);
+                    item.setTextColor(Color.parseColor("#000000"));
+                }
+                break;
+            case "more_less_holes":
+                if(myGame.getItems().get("more_less_holes")){
+                    myGame.getItems().put("more_less_holes", false);
+                    item.setTextColor(Color.parseColor("#FF1212"));
+                }else{
+                    myGame.getItems().put("more_less_holes", true);
+                    item.setTextColor(Color.parseColor("#000000"));
+                }
+                break;
+            case "reverse":
+                if(myGame.getItems().get("reverse")){
+                    myGame.getItems().put("reverse", false);
+                    item.setTextColor(Color.parseColor("#FF1212"));
+                }else{
+                    myGame.getItems().put("reverse", true);
+                    item.setTextColor(Color.parseColor("#000000"));
+                }
+                break;
+            case "no_wall":
+                if(myGame.getItems().get("no_wall")){
+                    myGame.getItems().put("no_wall", false);
+                    item.setTextColor(Color.parseColor("#FF1212"));
+                }else{
+                    myGame.getItems().put("no_wall", true);
+                    item.setTextColor(Color.parseColor("#000000"));
+                }
+                break;
         }
+    }
+
+    private void onStartClick(){
+        Intent intent = new Intent(this, GameScreen.class);
+        intent.putExtra("myGame", myGame);
+        startActivity(intent);
+        setContentView(R.layout.game_screen);
     }
 }
