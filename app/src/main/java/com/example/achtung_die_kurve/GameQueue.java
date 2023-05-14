@@ -14,6 +14,7 @@ import android.widget.TextView;
 public class GameQueue extends AppCompatActivity {
 
     private Game myGame;
+    private Player myPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -31,7 +32,7 @@ public class GameQueue extends AppCompatActivity {
         final TextView player4 = findViewById(R.id.player4);
 
         Intent intent = getIntent();
-        Player myPlayer = (Player) intent.getSerializableExtra("myPlayer");
+        myPlayer = (Player) intent.getSerializableExtra("myPlayer");
         if(myPlayer.isHost()){
             //Game-Objekt holen
             myGame = (Game) intent.getSerializableExtra("myGame");
@@ -82,60 +83,65 @@ public class GameQueue extends AppCompatActivity {
         start.setOnClickListener(view -> onStartClick());
     }
     private void onItemClick(TextView item){
-
-        switch(getResources().getResourceEntryName(item.getId())){
-            case "fast_slow":
-                if(myGame.getItems().get("fast_slow")){
-                    myGame.getItems().put("fast_slow", false);
-                    item.setTextColor(Color.parseColor("#FF1212"));
-                }else{
-                    myGame.getItems().put("fast_slow", true);
-                    item.setTextColor(Color.parseColor("#000000"));
-                }
-                break;
-            case "thick_thin":
-                if(myGame.getItems().get("thick_thin")){
-                    myGame.getItems().put("thick_thin", false);
-                    item.setTextColor(Color.parseColor("#FF1212"));
-                }else{
-                    myGame.getItems().put("thick_thin", true);
-                    item.setTextColor(Color.parseColor("#000000"));
-                }
-                break;
-            case "more_less_holes":
-                if(myGame.getItems().get("more_less_holes")){
-                    myGame.getItems().put("more_less_holes", false);
-                    item.setTextColor(Color.parseColor("#FF1212"));
-                }else{
-                    myGame.getItems().put("more_less_holes", true);
-                    item.setTextColor(Color.parseColor("#000000"));
-                }
-                break;
-            case "reverse":
-                if(myGame.getItems().get("reverse")){
-                    myGame.getItems().put("reverse", false);
-                    item.setTextColor(Color.parseColor("#FF1212"));
-                }else{
-                    myGame.getItems().put("reverse", true);
-                    item.setTextColor(Color.parseColor("#000000"));
-                }
-                break;
-            case "no_wall":
-                if(myGame.getItems().get("no_wall")){
-                    myGame.getItems().put("no_wall", false);
-                    item.setTextColor(Color.parseColor("#FF1212"));
-                }else{
-                    myGame.getItems().put("no_wall", true);
-                    item.setTextColor(Color.parseColor("#000000"));
-                }
-                break;
+        //nur der Host kann Items aktivieren/deaktivieren
+        if(myPlayer.isHost()){
+            switch(getResources().getResourceEntryName(item.getId())){
+                case "fast_slow":
+                    if(myGame.getItems().get("fast_slow")){
+                        myGame.getItems().put("fast_slow", false);
+                        item.setTextColor(Color.parseColor("#FF1212"));
+                    }else{
+                        myGame.getItems().put("fast_slow", true);
+                        item.setTextColor(Color.parseColor("#000000"));
+                    }
+                    break;
+                case "thick_thin":
+                    if(myGame.getItems().get("thick_thin")){
+                        myGame.getItems().put("thick_thin", false);
+                        item.setTextColor(Color.parseColor("#FF1212"));
+                    }else{
+                        myGame.getItems().put("thick_thin", true);
+                        item.setTextColor(Color.parseColor("#000000"));
+                    }
+                    break;
+                case "more_less_holes":
+                    if(myGame.getItems().get("more_less_holes")){
+                        myGame.getItems().put("more_less_holes", false);
+                        item.setTextColor(Color.parseColor("#FF1212"));
+                    }else{
+                        myGame.getItems().put("more_less_holes", true);
+                        item.setTextColor(Color.parseColor("#000000"));
+                    }
+                    break;
+                case "reverse":
+                    if(myGame.getItems().get("reverse")){
+                        myGame.getItems().put("reverse", false);
+                        item.setTextColor(Color.parseColor("#FF1212"));
+                    }else{
+                        myGame.getItems().put("reverse", true);
+                        item.setTextColor(Color.parseColor("#000000"));
+                    }
+                    break;
+                case "no_wall":
+                    if(myGame.getItems().get("no_wall")){
+                        myGame.getItems().put("no_wall", false);
+                        item.setTextColor(Color.parseColor("#FF1212"));
+                    }else{
+                        myGame.getItems().put("no_wall", true);
+                        item.setTextColor(Color.parseColor("#000000"));
+                    }
+                    break;
+            }
         }
     }
 
     private void onStartClick(){
-        Intent intent = new Intent(this, GameScreen.class);
-        intent.putExtra("myGame", myGame);
-        startActivity(intent);
-        setContentView(R.layout.game_screen);
+        //nur der Host kann das Spiel starten
+        if(myPlayer.isHost()){
+            Intent intent = new Intent(this, GameScreen.class);
+            intent.putExtra("myGame", myGame);
+            startActivity(intent);
+            setContentView(R.layout.game_screen);
+        }
     }
 }
