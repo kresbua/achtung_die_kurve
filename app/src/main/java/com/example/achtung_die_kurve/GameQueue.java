@@ -38,7 +38,7 @@ public class GameQueue extends AppCompatActivity {
 
         if(myPlayer.isHost()){
             //Game für andere publishen
-            GamePublisher gamePublisher = new GamePublisher(myGame);
+            GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
             gamePublisher.startPublishingGame();
 
             //Items + Booleans zur Hashmap hinzufügen
