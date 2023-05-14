@@ -53,4 +53,7 @@ public class CanvasView extends View {
         points.clear();
         invalidate();
     }
+    public void setPaintColor(int color){
+        circlePaint.setColor(color);
+    }
 }

@@ -192,13 +192,17 @@ public class GameQueue extends AppCompatActivity {
         GradientDrawable backgroundGradient = (GradientDrawable) textView.getBackground();
         backgroundGradient.setStroke(2, color);
         textView.setTextColor(color);
+        myPlayer.setColor(color);
     }
 
+    //Color der Spieler müssen noch gesetzt werden
+    //int muss noch übergeben werden damit man weiß an welcher stelle der Spieler ist in Player Array
     private void onStartClick(){
         //nur der Host kann das Spiel starten
         if(myPlayer.isHost()){
             Intent intent = new Intent(this, GameScreen.class);
             intent.putExtra("myGame", myGame);
+            intent.putExtra("myPlayer", myPlayer);
             startActivity(intent);
             setContentView(R.layout.game_screen);
         }

@@ -1,5 +1,6 @@
 package com.example.achtung_die_kurve;
 
+import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.view.View;
@@ -13,25 +14,35 @@ import java.util.TimerTask;
 
 public class GameScreen extends AppCompatActivity {
     private CanvasView canvasView;
+    private Game myGame;
+    private Player myPlayer;
     private Timer timer;
-
-    private int circleSize = 10;
-    private int currentY = 800;
-    private int currentX = 200;
-    private int directionX = 0;
-    private int directionY = -10;
-    private List<PointF> points;
-
     private float collisionRadius;
     private boolean collision = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Player player2 = new Player("player2", false);
+        Player player3 = new Player("player2", false);
+        Player player4 = new Player("player2", false);
+
+        player2.setCurrentX(400);
+        player2.setCurrentY(800);
+
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.game_screen);
 
-        points = new ArrayList<>();
+        //Game Objekt holen
+        Intent intent = getIntent();
+        myGame = (Game) intent.getSerializableExtra("myGame");
+
+        //nur zum Testen
+        myGame.addPlayer(player2);
+
+        //Player Objekt holen
+        myPlayer = (Player) intent.getSerializableExtra("myPlayer");
 
         Button left = findViewById(R.id.left);
         Button right = findViewById(R.id.right);
@@ -39,18 +50,18 @@ public class GameScreen extends AppCompatActivity {
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (directionX >= 0 && directionY < 0) {
-                    directionX += 2;
-                    directionY += 2;
-                } else if (directionX > 0 && directionY >= 0) {
-                    directionX -= 2;
-                    directionY += 2;
-                } else if (directionX <= 0 && directionY > 0) {
-                    directionX -= 2;
-                    directionY -= 2;
+                if (myPlayer.getDirectionX() >= 0 && myPlayer.getDirectionY() < 0) {
+                    myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
+                    myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
+                } else if (myPlayer.getDirectionX() > 0 && myPlayer.getDirectionY() >= 0) {
+                    myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
+                    myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
+                } else if (myPlayer.getDirectionX() <= 0 && myPlayer.getDirectionY() > 0) {
+                    myPlayer.setDirectionX(myPlayer.getDirectionX()-2);//hier -
+                    myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
                 } else {
-                    directionX += 2;
-                    directionY -= 2;
+                    myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
+                    myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
                 }
             }
         });
@@ -58,23 +69,26 @@ public class GameScreen extends AppCompatActivity {
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (directionX <= 0 && directionY < 0) {
-                    directionX -= 2;
-                    directionY += 2;
-                } else if (directionX < 0 && directionY >= 0) {
-                    directionX += 2;
-                    directionY += 2;
-                } else if (directionX >= 0 && directionY > 0) {
-                    directionX += 2;
-                    directionY -= 2;
+                if (myPlayer.getDirectionX() <= 0 && myPlayer.getDirectionY() < 0) {
+                    myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
+                    myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
+                } else if (myPlayer.getDirectionX() < 0 && myPlayer.getDirectionY() >= 0) {
+                    myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
+                    myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
+                } else if (myPlayer.getDirectionX() >= 0 && myPlayer.getDirectionY() > 0) {
+                    myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
+                    myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
                 } else {
-                    directionX -= 2;
-                    directionY -= 2;
+                    myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
+                    myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
                 }
             }
         });
 
         canvasView = findViewById(R.id.canvas);
+        canvasView.setPaintColor(myPlayer.getColor());
+
+        collisionRadius = myPlayer.getCircleSize() / 2.0f;
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -83,54 +97,57 @@ public class GameScreen extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        float posX = currentX + directionX;
-                        float posY = currentY + directionY;
+                        float posX = myPlayer.getCurrentX() + myPlayer.getDirectionX();
+                        float posY = myPlayer.getCurrentY() + myPlayer.getDirectionY();
 
+                        drawPlayerCoordinates();
                         canvasView.addCircle(posX, posY);
-                        currentY = (int) posY;
-                        currentX = (int) posX;
+                        myPlayer.setCurrentY((int) posY);
+                        myPlayer.setCurrentX((int) posX);
 
                         //Kollisionserkennung mit den Rändern
-                        if (currentY <= circleSize/2 + 5) {
+                        if (myPlayer.getCurrentY() <= myPlayer.getCircleSize()/2 + 5) {
                             collision = true;
-                        } else if (currentY >= canvasView.getHeight() - circleSize/2 - 7) {
+                        } else if (myPlayer.getCurrentY() >= canvasView.getHeight() - myPlayer.getCircleSize()/2 - 7) {
                             collision = true;
-                        } else if (currentX >= canvasView.getWidth() - circleSize/2 - 7) {
+                        } else if (myPlayer.getCurrentX() >= canvasView.getWidth() - myPlayer.getCircleSize()/2 - 7) {
                             collision = true;
-                        } else if (currentX <= circleSize/2 + 7) {
+                        } else if (myPlayer.getCurrentX() <= myPlayer.getCircleSize()/2 + 7) {
                             collision = true;
                         }
 
                         //Kollisionserkennung mit sich selbst
-                        PointF currentPoint = new PointF(currentX, currentY);
-                        float collisionRadius = circleSize / 2.0f;
+                        PointF currentPoint = new PointF(myPlayer.getCurrentX(), myPlayer.getCurrentY());
+                        float collisionRadius = myPlayer.getCircleSize() / 2.0f;
 
-                        int numPointsToCheck = Math.max(0, points.size() - 2); // Anzahl der Punkte, die überprüft werden sollen
+                        int numPointsToCheck = Math.max(0, myPlayer.getPoints().size() - 2); // Anzahl der Punkte, die überprüft werden sollen
 
                         for (int i = 0; i < numPointsToCheck; i++) {
-                            PointF point = points.get(i);
+                            PointF point = myPlayer.getPoints().get(i);
                             float distanceX = Math.abs(currentPoint.x - point.x);
                             float distanceY = Math.abs(currentPoint.y - point.y);
 
-                            if (distanceX < collisionRadius + circleSize && distanceY < collisionRadius + circleSize && !isCloseToLastTwoPoints(currentPoint, points)) {
+                            if (distanceX < collisionRadius + myPlayer.getCircleSize() && distanceY < collisionRadius + myPlayer.getCircleSize() && !isCloseToLastTwoPoints(currentPoint, myPlayer.getPoints())) {
                                 // Kollision mit sich selbst erkannt
                                 collision = true;
                                 break;
                             }
                         }
 
-                        points.add(currentPoint);
+                        myPlayer.addPoint(currentPoint);
 
                         if(collision){
                             canvasView.addCircle(posX, posY);
                             canvasView.clearCanvas();
-                            points.clear();
-                            currentX = 200;
-                            currentY = 800;
-                            directionX = 0;
-                            directionY = -10;
+                            myPlayer.getPoints().clear();
+                            myPlayer.setCurrentX(200);
+                            myPlayer.setCurrentY(800);
+                            myPlayer.setDirectionX(0);
+                            myPlayer.setDirectionY(-10);
                             collision = false;
                         }
+
+                        System.out.println("Direction X: " + myPlayer.getDirectionX() + " DirectionY: " + myPlayer.getDirectionY());
                     }
                 });
             }
@@ -157,6 +174,16 @@ public class GameScreen extends AppCompatActivity {
 
         // Überprüfen, ob der Abstand zu den letzten beiden Punkten kleiner als der Kollisionsradius ist
         return distanceToLastPoint < collisionRadius && distanceToSecondLastPoint < collisionRadius;
+    }
+
+    private void drawPlayerCoordinates() {
+        List<Player> players = myGame.getPlayers();
+
+        for (Player player : players) {
+            float posX = player.getCurrentX();
+            float posY = player.getCurrentY();
+            canvasView.addCircle(posX, posY);
+        }
     }
 
     @Override
