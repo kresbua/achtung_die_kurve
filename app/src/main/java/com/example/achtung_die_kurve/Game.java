@@ -8,6 +8,8 @@ public class Game implements Serializable {
 
     private String gameName;
     private boolean isPrivate;
+
+    private int playerNumber;
     private String inetAddress;
     private int port;
     private String password;
@@ -30,8 +32,6 @@ public class Game implements Serializable {
         players = new ArrayList<>();
         items = new HashMap<String, Boolean>();
     }
-
-
 
     public HashMap<String, Boolean> getItems(){
         return items;

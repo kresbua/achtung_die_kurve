@@ -36,19 +36,6 @@ public class GameQueue extends AppCompatActivity {
         //Spieler dem Spiel hinzufügen
         myGame.addPlayer(myPlayer);
 
-        if(myPlayer.isHost()){
-            //Game für andere publishen
-            GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
-            gamePublisher.startPublishingGame();
-
-            //Items + Booleans zur Hashmap hinzufügen
-            myGame.getItems().put("fast_slow", true);
-            myGame.getItems().put("thick_thin", true);
-            myGame.getItems().put("more_less_holes", true);
-            myGame.getItems().put("reverse", true);
-            myGame.getItems().put("no_wall", true);
-        }
-
         //Spieler-Textviews holen
         final TextView host = findViewById(R.id.player1);
         final TextView player2 = findViewById(R.id.player2);
@@ -58,7 +45,6 @@ public class GameQueue extends AppCompatActivity {
         //Spieler-Namen setzen
         switch(myGame.getPlayers().size()){
             case 1:
-                //Host Username setzen
                 host.setText(myPlayer.getUsername());
                 break;
             case 2:
@@ -70,6 +56,19 @@ public class GameQueue extends AppCompatActivity {
             case 4:
                 player4.setText(myPlayer.getUsername());
                 break;
+        }
+
+        if(myPlayer.isHost()){
+            //Game für andere publishen
+            GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
+            gamePublisher.startPublishingGame();
+
+            //Items + Booleans zur Hashmap hinzufügen
+            myGame.getItems().put("fast_slow", true);
+            myGame.getItems().put("thick_thin", true);
+            myGame.getItems().put("more_less_holes", true);
+            myGame.getItems().put("reverse", true);
+            myGame.getItems().put("no_wall", true);
         }
 
         final Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);
@@ -204,5 +203,4 @@ public class GameQueue extends AppCompatActivity {
             setContentView(R.layout.game_screen);
         }
     }
-
 }
