@@ -8,7 +8,6 @@ public class Game implements Serializable {
 
     private String gameName;
     private boolean isPrivate;
-    private int playerNumber;
     private String inetAddress;
     private int port;
     private String password;
@@ -37,6 +36,10 @@ public class Game implements Serializable {
         players.add(player);
     }
 
+    public ArrayList<Player> getPlayers(){
+        return this.players;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -47,10 +50,6 @@ public class Game implements Serializable {
 
     public boolean getPrivacyStatus() {
         return isPrivate;
-    }
-
-    public int getPlayerNumber() {
-        return playerNumber;
     }
 
     public String getInetAddress() {
