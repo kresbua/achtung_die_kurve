@@ -24,6 +24,15 @@ public class Game implements Serializable {
         items = new HashMap<String, Boolean>();
     }
 
+    public Game(String gameName, boolean isPrivate) {
+        this.gameName = gameName;
+        this.isPrivate = isPrivate;
+        players = new ArrayList<>();
+        items = new HashMap<String, Boolean>();
+    }
+
+
+
     public HashMap<String, Boolean> getItems(){
         return items;
     }

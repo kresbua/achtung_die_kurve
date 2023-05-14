@@ -316,7 +316,7 @@ public class StartScreen extends AppCompatActivity {
         continueButton.setEnabled(false);
         GameReceiver gameReceiver = new GameReceiver();
         ArrayList<Game> foundGames = gameReceiver.searchGames();
-        foundGames.add(new Game("TestGame", false, ""));
+        foundGames.add(new Game("TestGame", false));
 
         Typeface retroFont = getResources().getFont(R.font.retro_gaming);
 
