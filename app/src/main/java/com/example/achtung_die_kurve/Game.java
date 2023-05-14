@@ -28,6 +28,8 @@ public class Game implements Serializable {
         return items;
     }
 
+    public int getPlayerNumber(){return players.size();}
+
     public void addItem(String itemName, Boolean active){
         items.put(itemName, active);
     }
