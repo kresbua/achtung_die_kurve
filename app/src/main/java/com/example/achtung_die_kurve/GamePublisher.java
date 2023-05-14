@@ -90,8 +90,10 @@ public class GamePublisher {
                             socket = serverSocket.accept();
                             inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                             outputStream = new DataOutputStream(socket.getOutputStream());
-                            String playersUsername = inputStream.readUTF();
-                            handlePlayer(socket, inputStream, outputStream, playersUsername);
+                            String playerJSONString = inputStream.readUTF();
+                            Gson gson = new Gson();
+                            Player player = gson.fromJson(playerJSONString, Player.class);
+                            handlePlayer(socket, inputStream, outputStream, player);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -111,7 +113,7 @@ public class GamePublisher {
         }
     }
 
-    public void handlePlayer(Socket socket, DataInputStream inputStream, DataOutputStream outputStream, String playersUsername){
+    public void handlePlayer(Socket socket, DataInputStream inputStream, DataOutputStream outputStream, Player player){
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -129,7 +131,7 @@ public class GamePublisher {
         for (int i = 10; i < 30; i++){
             try {
                 Socket socket = new Socket();
-                socket.connect(new InetSocketAddress(addressPrefix + i, tcpPort), 2000); // Timeout nach 2 Sekunden
+                socket.connect(new InetSocketAddress(addressPrefix + i, tcpPort), 200);
                 System.out.println("Adresse ist besetzt: " + addressPrefix + i + ":" + tcpPort);
                 socket.close();
             } catch (Exception e) {

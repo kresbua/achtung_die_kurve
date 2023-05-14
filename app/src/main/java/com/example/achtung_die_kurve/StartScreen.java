@@ -6,10 +6,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -59,6 +64,7 @@ public class StartScreen extends AppCompatActivity {
         openSetUsernamePopup(view, option);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void openSetUsernamePopup(View view, String option){
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -73,7 +79,7 @@ public class StartScreen extends AppCompatActivity {
         int height = (int)(displayMetrics.heightPixels/1.1);
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
+        popupWindow.setOutsideTouchable(false);
 
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window tolken
@@ -83,8 +89,41 @@ public class StartScreen extends AppCompatActivity {
         final EditText usernameInput = popupView.findViewById(R.id.usernameInput);
         final ImageButton cancelButton = popupView.findViewById(R.id.cancelButton);
 
-        // add Listeners
+        //Continuebutton disablen, solang noch nichts eingegeben wurde
+        continueButton.setEnabled(false);
+        continueButton.setAlpha(0.6f);
+        continueButton.setClickable(false);
+
+        //maximale Länge von 15 Zeichen erlauben
+        InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter.LengthFilter(15);
+        usernameInput.setFilters(filters);
+
         cancelButton.setOnClickListener(view1 -> popupWindow.dismiss());
+        usernameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count > 0){
+                    continueButton.setEnabled(true);
+                    continueButton.setAlpha(1.0f);
+                    continueButton.setClickable(true);
+                }else{
+                    continueButton.setEnabled(false);
+                    continueButton.setAlpha(0.6f);
+                    continueButton.setClickable(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         continueButton.setOnClickListener(view1 -> continueButtonOnClick(popupWindow, view, usernameInput, option));
 
 
@@ -118,6 +157,8 @@ public class StartScreen extends AppCompatActivity {
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
+        popupWindow.setOutsideTouchable(false);
+
 
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window tolken
@@ -129,10 +170,70 @@ public class StartScreen extends AppCompatActivity {
         final EditText passwordInput = popupView.findViewById(R.id.passwordInput);
         final Button createGameButton = popupView.findViewById(R.id.createGameButton);
 
+        //maximale Länge von 15 Zeichen erlauben
+        InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter.LengthFilter(15);
+        gameNameInput.setFilters(filters);
+        passwordInput.setFilters(filters);
+
+        createGameButton.setEnabled(false);
+        createGameButton.setAlpha(0.6f);
+        createGameButton.setClickable(false);
+
+        gameNameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count > 0){
+                    createGameButton.setEnabled(true);
+                    createGameButton.setAlpha(1.0f);
+                    createGameButton.setClickable(true);
+                }else{
+                    createGameButton.setEnabled(false);
+                    createGameButton.setAlpha(0.6f);
+                    createGameButton.setClickable(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        passwordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count > 0 && gameNameInput.getText().length() > 0){
+                    createGameButton.setEnabled(true);
+                    createGameButton.setAlpha(1.0f);
+                    createGameButton.setClickable(true);
+                }else{
+                    createGameButton.setEnabled(false);
+                    createGameButton.setAlpha(0.6f);
+                    createGameButton.setClickable(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         // add Listeners
         cancelButton.setOnClickListener(view1 -> popupWindow.dismiss());
-        privateCheckboxAddCheckedChangeListener(privateCheckbox, passwordText, passwordInput);
+        privateCheckboxAddCheckedChangeListener(privateCheckbox, passwordText, passwordInput, createGameButton, gameNameInput);
         createGameButton.setOnClickListener(view1 -> createGameButtonOnClick(popupWindow, gameNameInput, passwordInput));
     }
 
@@ -150,7 +251,7 @@ public class StartScreen extends AppCompatActivity {
     }
 
 
-    public void privateCheckboxAddCheckedChangeListener(CheckBox privateCheckbox, TextView passwordText, EditText passwordInput){
+    public void privateCheckboxAddCheckedChangeListener(CheckBox privateCheckbox, TextView passwordText, EditText passwordInput, Button createGameButton, EditText gameNameInput){
         privateCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
@@ -158,14 +259,30 @@ public class StartScreen extends AppCompatActivity {
                     isPrivate = true;
                     passwordText.setAlpha(1.0f);
                     passwordInput.setAlpha(1.0f);
-                    passwordInput.setFocusable(true);
-                    passwordInput.setFocusable(View.FOCUSABLE);
+                    passwordInput.setEnabled(true);
+                    if(gameNameInput.getText().length() > 0 && passwordInput.getText().length() > 0){
+                        createGameButton.setEnabled(true);
+                        createGameButton.setAlpha(1.0f);
+                        createGameButton.setClickable(true);
+                    }else{
+                        createGameButton.setEnabled(false);
+                        createGameButton.setAlpha(0.6f);
+                        createGameButton.setClickable(false);
+                    }
                 }else{
                     isPrivate = false;
                     passwordText.setAlpha(0.3f);
                     passwordInput.setAlpha(0.3f);
-                    passwordInput.setFocusable(false);
-                    passwordInput.setFocusable(View.NOT_FOCUSABLE);
+                    passwordInput.setEnabled(false);
+                    if(gameNameInput.getText().length() > 0){
+                        createGameButton.setEnabled(true);
+                        createGameButton.setAlpha(1.0f);
+                        createGameButton.setClickable(true);
+                    }else{
+                        createGameButton.setEnabled(false);
+                        createGameButton.setAlpha(0.6f);
+                        createGameButton.setClickable(false);
+                    }
                 }
             }
         });
@@ -186,6 +303,7 @@ public class StartScreen extends AppCompatActivity {
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
+
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -193,8 +311,13 @@ public class StartScreen extends AppCompatActivity {
         final TableLayout availableGames = popupView.findViewById(R.id.availableGames);
         final Button continueButton = popupView.findViewById(R.id.continueButton);
 
+        continueButton.setAlpha(0.6f);
+        continueButton.setClickable(false);
+        continueButton.setEnabled(false);
         GameReceiver gameReceiver = new GameReceiver();
         ArrayList<Game> foundGames = gameReceiver.searchGames();
+        foundGames.add(new Game("TestGame", false, ""));
+
         Typeface retroFont = getResources().getFont(R.font.retro_gaming);
 
         if(foundGames != null){ //Games available
@@ -206,6 +329,7 @@ public class StartScreen extends AppCompatActivity {
                         TableRow.LayoutParams.FILL_PARENT);
                 tr.setLayoutParams(tlparams);
                 tr.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+                tr.setOnClickListener(v -> tableRowOnClick(tr, continueButton));
 
                 TableRow.LayoutParams tvparams = new TableRow.LayoutParams(
                         TableRow.LayoutParams.WRAP_CONTENT,
@@ -246,6 +370,13 @@ public class StartScreen extends AppCompatActivity {
 
     public void joinGameOnClick(View view, String option){
         openSetUsernamePopup(view, option);
+    }
+
+    public void tableRowOnClick(TableRow tr, Button continueButton){
+        tr.setAlpha(0.6f);
+        continueButton.setAlpha(1.0f);
+        continueButton.setClickable(true);
+        continueButton.setEnabled(true);
     }
 
     public void continueButtonOnClick(PopupWindow popupWindow){
