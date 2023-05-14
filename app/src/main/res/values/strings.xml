@@ -52,4 +52,5 @@
     <string name="right">RIGHT</string>
     <string name="left">LEFT</string>
     <string name="stop">STOP</string>
+    <string name="password_">Password:</string>
 </resources>

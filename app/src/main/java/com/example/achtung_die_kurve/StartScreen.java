@@ -125,8 +125,73 @@ public class StartScreen extends AppCompatActivity {
             }
         });
         continueButton.setOnClickListener(view1 -> continueButtonOnClick(popupWindow, view, usernameInput, option));
+    }
 
+    public void openEnterPasswordPopup(View view){
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.enter_password_popup, null);
 
+        // create the popup window
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int width = (int)(displayMetrics.widthPixels/1.5);
+        int height = (int)(displayMetrics.heightPixels/1.1);
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        popupWindow.setOutsideTouchable(false);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        final Button continueButton = popupView.findViewById(R.id.continueButton);
+        final EditText passwordInput = popupView.findViewById(R.id.passwordInput);
+        final ImageButton cancelButton = popupView.findViewById(R.id.cancelButton);
+
+        //Continuebutton disablen, solang noch nichts eingegeben wurde
+        continueButton.setEnabled(false);
+        continueButton.setAlpha(0.6f);
+        continueButton.setClickable(false);
+
+        //maximale Länge von 15 Zeichen erlauben
+        InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter.LengthFilter(15);
+        passwordInput.setFilters(filters);
+
+        cancelButton.setOnClickListener(view1 -> popupWindow.dismiss());
+        passwordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count > 0){
+                    continueButton.setEnabled(true);
+                    continueButton.setAlpha(1.0f);
+                    continueButton.setClickable(true);
+                }else{
+                    continueButton.setEnabled(false);
+                    continueButton.setAlpha(0.6f);
+                    continueButton.setClickable(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        continueButton.setOnClickListener(view1 -> continueButtonOnClickPassword(popupWindow, view, passwordInput));
+    }
+
+    public void continueButtonOnClickPassword(PopupWindow popupWindow, View view, EditText passwordInput){
+
+        popupWindow.dismiss();
     }
 
     public void continueButtonOnClick(PopupWindow popupWindow, View view, EditText usernameInput, String option){
@@ -234,14 +299,14 @@ public class StartScreen extends AppCompatActivity {
         // add Listeners
         cancelButton.setOnClickListener(view1 -> popupWindow.dismiss());
         privateCheckboxAddCheckedChangeListener(privateCheckbox, passwordText, passwordInput, createGameButton, gameNameInput);
-        createGameButton.setOnClickListener(view1 -> createGameButtonOnClick(popupWindow, gameNameInput, passwordInput));
+        createGameButton.setOnClickListener(view1 -> createGameButtonOnClick(view, popupWindow, gameNameInput, passwordInput, privateCheckbox));
     }
 
-    public void createGameButtonOnClick(PopupWindow popupWindow, EditText gameNameInput, EditText passwordInput){
+    public void createGameButtonOnClick(View view, PopupWindow popupWindow, EditText gameNameInput, EditText passwordInput, CheckBox privateCheckbox){
         gameName = String.valueOf(gameNameInput.getText());
         password = String.valueOf(passwordInput.getText());
-        Game myGame = new Game(gameName, isPrivate, password);
         Player myPlayer = new Player(username, true);
+        Game myGame = new Game(gameName, isPrivate, password);
         Intent intent = new Intent(this, GameQueue.class);
         intent.putExtra("myGame", myGame);
         intent.putExtra("myPlayer", myPlayer);
@@ -249,6 +314,7 @@ public class StartScreen extends AppCompatActivity {
         setContentView(R.layout.game_queue);
         popupWindow.dismiss();
     }
+
 
 
     public void privateCheckboxAddCheckedChangeListener(CheckBox privateCheckbox, TextView passwordText, EditText passwordInput, Button createGameButton, EditText gameNameInput){
