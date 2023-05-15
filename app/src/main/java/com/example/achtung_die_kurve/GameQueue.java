@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Map;
+
 public class GameQueue extends AppCompatActivity {
 
     private Game myGame;
@@ -37,33 +39,6 @@ public class GameQueue extends AppCompatActivity {
         if(myPlayer.isHost()){
             //Spieler dem Spiel hinzufügen
             myGame.addPlayer(myPlayer);
-        }
-
-        myPlayer.setPlayerNumber(myGame.getPlayers().size());
-
-        //Spieler-Textviews holen
-        final TextView host = findViewById(R.id.player1);
-        final TextView player2 = findViewById(R.id.player2);
-        final TextView player3 = findViewById(R.id.player3);
-        final TextView player4 = findViewById(R.id.player4);
-
-        //Spieler-Namen setzen
-        switch(myPlayer.getPlayerNumber()){
-            case 1:
-                host.setText(myPlayer.getUsername());
-                break;
-            case 2:
-                player2.setText(myPlayer.getUsername());
-                break;
-            case 3:
-                player3.setText(myPlayer.getUsername());
-                break;
-            case 4:
-                player4.setText(myPlayer.getUsername());
-                break;
-        }
-
-        if(myPlayer.isHost()){
 
             //Game für andere publishen
             GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
@@ -76,8 +51,46 @@ public class GameQueue extends AppCompatActivity {
             myGame.getItems().put("more_less_holes", true);
             myGame.getItems().put("reverse", true);
             myGame.getItems().put("no_wall", true);
+
+            //Colors + Booleans zur Hashmap hinzufügen
+            myGame.getAvailableColors().put("#1CFF06", true);
+            myGame.getAvailableColors().put("#FFFF00", true);
+            myGame.getAvailableColors().put("#DB7800", true);
+            myGame.getAvailableColors().put("#FF1212", true);
+            myGame.getAvailableColors().put("#FF06FB", true);
+            myGame.getAvailableColors().put("#006CFF", true);
         }
 
+        //muss noch überlegt werden, ob das immer funktioniert
+        myPlayer.setPlayerNumber(myGame.getPlayers().size());
+
+        //Spielercounter aktualisieren
+        final TextView howMuchPlayers = findViewById(R.id.players);
+        howMuchPlayers.setText("Players: " + myGame.getPlayers().size() + "/4");
+
+        //Spieler-Textviews holen
+        final TextView host = findViewById(R.id.player1);
+        final TextView player2 = findViewById(R.id.player2);
+        final TextView player3 = findViewById(R.id.player3);
+        final TextView player4 = findViewById(R.id.player4);
+
+        //Spieler-Namen setzen
+        switch (myPlayer.getPlayerNumber()){
+            case 1:
+                setUsernameAndColor(host);
+                break;
+            case 2:
+                setUsernameAndColor(player2);
+                break;
+            case 3:
+                setUsernameAndColor(player3);
+                break;
+            case 4:
+                setUsernameAndColor(player4);
+                break;
+        }
+
+        //Dropdown Menü holen
         final Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.points_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -113,7 +126,7 @@ public class GameQueue extends AppCompatActivity {
         //onClickListener setzen
         light_green.setOnClickListener(view -> setColor("#1CFF06"));
         yellow.setOnClickListener(view -> setColor("#FFFF00"));
-        orange.setOnClickListener(view -> setColor("#db7800"));
+        orange.setOnClickListener(view -> setColor("#DB7800"));
         red.setOnClickListener(view -> setColor("#FF1212"));
         pink.setOnClickListener(view -> setColor("#FF06FB"));
         blue.setOnClickListener(view -> setColor("#006CFF"));
@@ -124,6 +137,27 @@ public class GameQueue extends AppCompatActivity {
         //onClickListener setzen
         start.setOnClickListener(view -> onStartClick());
     }
+
+    public void setUsernameAndColor(TextView textView){
+        System.out.println("Bevor Farbe auf TextView gesetzt: " + myGame.getAvailableColors());
+        System.out.println("Bevor Farbe auf TextView gesetzt: " + myPlayer.getColor());
+        textView.setText(myPlayer.getUsername());
+        for (Map.Entry<String, Boolean> entry : myGame.getAvailableColors().entrySet()) {
+            if (entry.getValue()) {
+                GradientDrawable backgroundGradient = (GradientDrawable) textView.getBackground();
+                backgroundGradient.setStroke(2, Color.parseColor(entry.getKey()));
+                textView.setTextColor(Color.parseColor(entry.getKey()));
+                myPlayer.setColor(Color.parseColor(entry.getKey()));
+
+                //Farbe als besetzt markieren
+                myGame.getAvailableColors().put(entry.getKey(), false);
+                break;
+            }
+        }
+        System.out.println("Nach Farbe auf TextView gesetzt: " + myGame.getAvailableColors());
+        System.out.println("Nach Farbe auf TextView gesetzt: " + myPlayer.getColor());
+    }
+
     private void onItemClick(TextView item){
         //nur der Host kann Items aktivieren/deaktivieren
         if(myPlayer.isHost()){
@@ -178,32 +212,46 @@ public class GameQueue extends AppCompatActivity {
     }
 
     private void setColor(String stringColor){
-        int color = Color.parseColor(stringColor);
-        TextView textView = null;
+        System.out.println("Bevor Farbe geändert: " + myGame.getAvailableColors());
+        System.out.println("Bevor Farbe geändert: " + myPlayer.getColor());
+        if(myGame.getAvailableColors().get(stringColor)){
 
-        switch(myPlayer.getPlayerNumber()){
-            case 1:
-                textView = findViewById(R.id.player1);
-                break;
-            case 2:
-                textView = findViewById(R.id.player2);
-                break;
-            case 3:
-                textView = findViewById(R.id.player3);
-                break;
-            case 4:
-                textView = findViewById(R.id.player4);
-                break;
+            //Farbe als besetzt markieren
+            myGame.getAvailableColors().put(stringColor, false);
+
+            int color = Color.parseColor(stringColor);
+            TextView textView = null;
+
+            switch(myPlayer.getPlayerNumber()){
+                case 1:
+                    textView = findViewById(R.id.player1);
+                    break;
+                case 2:
+                    textView = findViewById(R.id.player2);
+                    break;
+                case 3:
+                    textView = findViewById(R.id.player3);
+                    break;
+                case 4:
+                    textView = findViewById(R.id.player4);
+                    break;
+            }
+
+            //Farbe, die TextView bis jetzt hatte, wieder freigeben
+            int currentColorInt = myPlayer.getColor();
+            String currentColorString = String.format("#%06X", (0xFFFFFF & currentColorInt));
+            myGame.getAvailableColors().put(currentColorString, true);
+
+            //Neue Farbe setzen
+            GradientDrawable backgroundGradient = (GradientDrawable) textView.getBackground();
+            backgroundGradient.setStroke(2, color);
+            textView.setTextColor(color);
+            myPlayer.setColor(color);
         }
-
-        GradientDrawable backgroundGradient = (GradientDrawable) textView.getBackground();
-        backgroundGradient.setStroke(2, color);
-        textView.setTextColor(color);
-        myPlayer.setColor(color);
+        System.out.println("Nach Farbe geändert: " + myGame.getAvailableColors());
+        System.out.println("nach Farbe geändert: " + myPlayer.getColor());
     }
 
-    //Color der Spieler müssen noch gesetzt werden
-    //int muss noch übergeben werden damit man weiß an welcher stelle der Spieler ist in Player Array
     private void onStartClick(){
         //nur der Host kann das Spiel starten
         if(myPlayer.isHost()){

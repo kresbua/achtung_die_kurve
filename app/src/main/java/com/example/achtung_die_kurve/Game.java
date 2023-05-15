@@ -23,6 +23,7 @@ public class Game implements Serializable {
     private ArrayList<Player> players;
 
     private HashMap<String, Boolean> items;
+    private HashMap<String, Boolean> availableColors;
 
     public Game(String gameName, boolean isPrivate, String password) {
         this.gameName = gameName;
@@ -30,6 +31,7 @@ public class Game implements Serializable {
         this.password = password;
         players = new ArrayList<>();
         items = new HashMap<String, Boolean>();
+        availableColors = new HashMap<String, Boolean>();
     }
 
     public Game(String gameName, boolean isPrivate) {
@@ -37,6 +39,10 @@ public class Game implements Serializable {
         this.isPrivate = isPrivate;
         players = new ArrayList<>();
         items = new HashMap<String, Boolean>();
+    }
+
+    public HashMap<String, Boolean> getAvailableColors() {
+        return availableColors;
     }
 
     public HashMap<String, Boolean> getItems(){

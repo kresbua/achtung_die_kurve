@@ -9,7 +9,7 @@
     <string name="create_game">CREATE GAME</string>
     <string name="continueText">CONTINUE</string>
     <string name="username">Username:</string>
-    <string name="players">Players: 1/4</string>
+    <string name="players">Players:</string>
     <string name="items">Items</string>
     <string name="colors">Colors</string>
     <string name="points">Points</string>

@@ -25,13 +25,6 @@ public class GameScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Player player2 = new Player("player2", false);
-        Player player3 = new Player("player2", false);
-        Player player4 = new Player("player2", false);
-
-        player2.setCurrentX(400);
-        player2.setCurrentY(800);
-
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.game_screen);
@@ -39,9 +32,6 @@ public class GameScreen extends AppCompatActivity {
         //Game Objekt holen
         Intent intent = getIntent();
         myGame = (Game) intent.getSerializableExtra("myGame");
-
-        //nur zum Testen
-        myGame.addPlayer(player2);
 
         //Player Objekt holen
         myPlayer = (Player) intent.getSerializableExtra("myPlayer");
