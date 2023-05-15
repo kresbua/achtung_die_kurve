@@ -107,7 +107,7 @@ public class GameReceiver {
                 Socket socket = null;
                 DataInputStream inputStream = null;
                 DataOutputStream outputStream = null;
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 800 + myGame.getPlayerNumber());
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 1990 + myGame.getPlayerNumber());
                 while (!closeTCPSocket){
                     try {
                         socket.bind(inetSocketAddress);

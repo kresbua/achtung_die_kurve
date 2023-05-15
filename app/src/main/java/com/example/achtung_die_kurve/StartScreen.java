@@ -29,6 +29,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.security.Identity;
 import java.util.ArrayList;
 
@@ -58,6 +60,20 @@ public class StartScreen extends AppCompatActivity {
         hostGame.setOnClickListener(view -> hostGameOnClick(getWindow().getDecorView().findViewById(android.R.id.content), "host"));
         joinGame.setOnClickListener(view -> joinGameOnClick(getWindow().getDecorView().findViewById(android.R.id.content), "join"));
 
+    }
+
+    public void test() throws IOException {
+        for (int i = 1; i < 6000; i++) {
+            try {
+                ServerSocket s = new ServerSocket(i);
+                System.out.println(i);
+            } catch (IOException ex) {
+                continue; // try next port
+            }
+        }
+
+        // if the program gets here, no port in the range was found
+        throw new IOException("no free port found");
     }
 
     public void hostGameOnClick(View view, String option){

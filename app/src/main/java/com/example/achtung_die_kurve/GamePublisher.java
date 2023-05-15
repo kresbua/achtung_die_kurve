@@ -90,8 +90,8 @@ public class GamePublisher {
                     int i = 1;
                     while (!closeTCPSocket){
                         try {
-                            serverSocket = new ServerSocket(tcpPort);
-                            serverSocket.bind(new InetSocketAddress(inetAddressTCP, tcpPort + i));
+                            serverSocket = new ServerSocket();
+                            serverSocket.bind(new InetSocketAddress(inetAddressTCP, 1990+i));
                             socket = serverSocket.accept();
                             inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                             outputStream = new DataOutputStream(socket.getOutputStream());
