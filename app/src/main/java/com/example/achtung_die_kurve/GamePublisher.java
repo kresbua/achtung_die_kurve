@@ -98,10 +98,12 @@ public class GamePublisher {
                             String playerJSONString = inputStream.readUTF();
                             Gson gson = new Gson();
                             Player player = gson.fromJson(playerJSONString, Player.class);
+                            myGame.addPlayer(player);
                             handlePlayer(socket, inputStream, outputStream, player);
                             i++;
                             if(i == 4){
                                 gameIsFull = true;
+                                closeTCPSocket = true;
                             }
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -131,6 +133,8 @@ public class GamePublisher {
         };
         new Thread(r).start();
     }
+
+    public Game getGame(){return myGame;}
 
 
     public boolean checkFreeTCPAddresses(){

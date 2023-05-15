@@ -20,6 +20,16 @@ public class Player implements Serializable {
     private int directionY = -10;
     private List<PointF> pointsXY;
 
+    private int playerNumber;
+
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
     private int points = 0;
 
     public Player(String username, boolean isHost) {

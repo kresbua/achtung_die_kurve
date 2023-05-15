@@ -33,17 +33,21 @@ public class GameQueue extends AppCompatActivity {
         //Game-Objekt holen
         myGame = (Game) intent.getSerializableExtra("myGame");
 
-        //Spieler dem Spiel hinzufügen
-        myGame.addPlayer(myPlayer);
+        if(myPlayer.isHost()){
+            //Spieler dem Spiel hinzufügen
+            myGame.addPlayer(myPlayer);
+        }
+
+        myPlayer.setPlayerNumber(myGame.getPlayers().size());
 
         //Spieler-Textviews holen
         final TextView host = findViewById(R.id.player1);
         final TextView player2 = findViewById(R.id.player2);
         final TextView player3 = findViewById(R.id.player3);
         final TextView player4 = findViewById(R.id.player4);
-    //test
+
         //Spieler-Namen setzen
-        switch(myGame.getPlayers().size()){
+        switch(myPlayer.getPlayerNumber()){
             case 1:
                 host.setText(myPlayer.getUsername());
                 break;
@@ -59,9 +63,11 @@ public class GameQueue extends AppCompatActivity {
         }
 
         if(myPlayer.isHost()){
+
             //Game für andere publishen
             GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
             gamePublisher.startPublishingGame();
+            gamePublisher.launchTCPServer();
 
             //Items + Booleans zur Hashmap hinzufügen
             myGame.getItems().put("fast_slow", true);
@@ -174,7 +180,7 @@ public class GameQueue extends AppCompatActivity {
         int color = Color.parseColor(stringColor);
         TextView textView = null;
 
-        switch(myGame.getPlayers().size()){
+        switch(myPlayer.getPlayerNumber()){
             case 1:
                 textView = findViewById(R.id.player1);
                 break;

@@ -449,17 +449,19 @@ public class StartScreen extends AppCompatActivity {
 
         int tableRowsNumber = availableGames.getChildCount();
         System.out.println(tableRowsNumber);
+        Player myPlayer = new Player(username, false);
         for (int i = 0; i < tableRowsNumber; i++){
             if(availableGames.getChildAt(i).getAlpha() != 1.0f){
-
+                GameReceiver gameReceiver = new GameReceiver();
+                gameReceiver.initiateTCPConnection(foundGames.get(i).getInetAddressTCP(), myPlayer);
+                Intent intent = new Intent(this, GameQueue.class);
+                intent.putExtra("myPlayer", myPlayer);
+                intent.putExtra("myGame", foundGames.get(i));
+                startActivity(intent);
+                setContentView(R.layout.game_queue);
+                popupWindow.dismiss();
+                break;
             }
         }
-
-        Player myPlayer = new Player(username, false);
-        Intent intent = new Intent(this, GameQueue.class);
-        intent.putExtra("myPlayer", myPlayer);
-        startActivity(intent);
-        setContentView(R.layout.game_queue);
-        popupWindow.dismiss();
     }
 }
