@@ -18,12 +18,22 @@ public class Player implements Serializable {
     private int currentX = 200;
     private int directionX = 0;
     private int directionY = -10;
-    private List<PointF> points;
+    private List<PointF> pointsXY;
+
+    private int points = 0;
 
     public Player(String username, boolean isHost) {
         this.username = username;
         this.isHost = isHost;
-        points = new ArrayList<>();
+        pointsXY = new ArrayList<>();
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     public int getDirectionX() {
@@ -70,12 +80,12 @@ public class Player implements Serializable {
         this.currentX = currentX;
     }
 
-    public List<PointF> getPoints(){
-        return points;
+    public List<PointF> getPointsXY(){
+        return pointsXY;
     }
 
     public void addPoint(PointF point){
-        points.add(point);
+        pointsXY.add(point);
     }
 
     public void setColor(int color){

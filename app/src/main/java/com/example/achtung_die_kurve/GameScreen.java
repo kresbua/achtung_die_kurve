@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,20 @@ public class GameScreen extends AppCompatActivity {
 
         //Player Objekt holen
         myPlayer = (Player) intent.getSerializableExtra("myPlayer");
+
+        //Punkteanzeigen für Player holen
+        final TextView player1_points = findViewById(R.id.player1_points);
+        final TextView player2_points = findViewById(R.id.player2_points);
+        final TextView player3_points = findViewById(R.id.player3_points);
+        final TextView player4_points = findViewById(R.id.player4_points);
+
+        //Punkteanzeigen text setzen
+        if(myPlayer.isHost()){
+            player1_points.setText(myPlayer.getUsername() + ":" + myPlayer.getPoints());
+            player1_points.setTextColor(myPlayer.getColor());
+        }else{
+            //to be continued
+        }
 
         Button left = findViewById(R.id.left);
         Button right = findViewById(R.id.right);
@@ -120,14 +136,14 @@ public class GameScreen extends AppCompatActivity {
                         PointF currentPoint = new PointF(myPlayer.getCurrentX(), myPlayer.getCurrentY());
                         float collisionRadius = myPlayer.getCircleSize() / 2.0f;
 
-                        int numPointsToCheck = Math.max(0, myPlayer.getPoints().size() - 2); // Anzahl der Punkte, die überprüft werden sollen
+                        int numPointsToCheck = Math.max(0, myPlayer.getPointsXY().size() - 2); // Anzahl der Punkte, die überprüft werden sollen
 
                         for (int i = 0; i < numPointsToCheck; i++) {
-                            PointF point = myPlayer.getPoints().get(i);
+                            PointF point = myPlayer.getPointsXY().get(i);
                             float distanceX = Math.abs(currentPoint.x - point.x);
                             float distanceY = Math.abs(currentPoint.y - point.y);
 
-                            if (distanceX < collisionRadius + myPlayer.getCircleSize() && distanceY < collisionRadius + myPlayer.getCircleSize() && !isCloseToLastTwoPoints(currentPoint, myPlayer.getPoints())) {
+                            if (distanceX < collisionRadius + myPlayer.getCircleSize() && distanceY < collisionRadius + myPlayer.getCircleSize() && !isCloseToLastTwoPoints(currentPoint, myPlayer.getPointsXY())) {
                                 // Kollision mit sich selbst erkannt
                                 collision = true;
                                 break;
@@ -139,7 +155,7 @@ public class GameScreen extends AppCompatActivity {
                         if(collision){
                             canvasView.addCircle(posX, posY);
                             canvasView.clearCanvas();
-                            myPlayer.getPoints().clear();
+                            myPlayer.getPointsXY().clear();
                             myPlayer.setCurrentX(200);
                             myPlayer.setCurrentY(800);
                             myPlayer.setDirectionX(0);

@@ -53,4 +53,8 @@
     <string name="left">LEFT</string>
     <string name="stop">STOP</string>
     <string name="password_">Password:</string>
+    <string name="player1_points">Player1: 0</string>
+    <string name="player2_points">Player2: 0</string>
+    <string name="player3_points">Player3: 0</string>
+    <string name="player4_points">Player4: 0</string>
 </resources>

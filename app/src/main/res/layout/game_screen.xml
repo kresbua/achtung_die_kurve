@@ -55,6 +55,30 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
 
+    <!-- Guideline Player2 Unten -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player2_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <!-- Guideline Player3 Unten -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player3_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <!-- Guideline Player4 Unten -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/player4_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
     <!-- Guideline Canvas Links -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/canvas_left_guideline"
@@ -116,5 +140,49 @@
         app:layout_constraintEnd_toStartOf="@+id/content_right_guideline"
         app:layout_constraintStart_toStartOf="@+id/canvas_right_guideline"
         app:layout_constraintTop_toTopOf="@+id/canvas_top_guideline" />
+
+    <TextView
+        android:id="@+id/player1_points"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textSize="22sp"
+        android:gravity="center|center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/stop_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/canvas_left_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/canvas_top_guideline" />
+
+    <TextView
+        android:id="@+id/player2_points"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textSize="22sp"
+        android:gravity="center|center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/player2_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/canvas_left_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/player1_points" />
+
+    <TextView
+        android:id="@+id/player3_points"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textSize="22sp"
+        android:gravity="center|center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/player3_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/canvas_left_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/player2_points" />
+
+    <TextView
+        android:id="@+id/player4_points"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textSize="22sp"
+        android:gravity="center|center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/player4_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/canvas_left_guideline"
+        app:layout_constraintStart_toStartOf="@+id/content_left_guideline"
+        app:layout_constraintTop_toTopOf="@+id/player3_bottom_guideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
