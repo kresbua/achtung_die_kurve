@@ -16,6 +16,7 @@ public class GameQueue extends AppCompatActivity {
 
     private Game myGame;
     private Player myPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
