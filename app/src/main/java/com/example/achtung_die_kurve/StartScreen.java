@@ -430,7 +430,7 @@ public class StartScreen extends AppCompatActivity {
                 availableGames.addView(tr);
             }
         }
-        continueButton.setOnClickListener(v -> continueButtonOnClick(popupWindow));
+        continueButton.setOnClickListener(v -> continueButtonOnClick(popupWindow, availableGames, foundGames));
         cancelButton.setOnClickListener(view1 -> popupWindow.dismiss());
     }
 
@@ -445,7 +445,16 @@ public class StartScreen extends AppCompatActivity {
         continueButton.setEnabled(true);
     }
 
-    public void continueButtonOnClick(PopupWindow popupWindow){
+    public void continueButtonOnClick(PopupWindow popupWindow, TableLayout availableGames, ArrayList<Game> foundGames){
+
+        int tableRowsNumber = availableGames.getChildCount();
+        System.out.println(tableRowsNumber);
+        for (int i = 0; i < tableRowsNumber; i++){
+            if(availableGames.getChildAt(i).getAlpha() != 1.0f){
+
+            }
+        }
+
         Player myPlayer = new Player(username, false);
         Intent intent = new Intent(this, GameQueue.class);
         intent.putExtra("myPlayer", myPlayer);
