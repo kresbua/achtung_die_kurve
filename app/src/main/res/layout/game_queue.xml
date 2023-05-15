@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".GameQueue">
-
+    <!--test-->
     <!-- Äußere Guideline Oben -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/content_top_guideline"

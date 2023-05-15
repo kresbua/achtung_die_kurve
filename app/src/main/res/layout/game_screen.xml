@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".GameScreen">
-
+    <!--test-->
     <!-- Guideline Rand Rechts -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/content_right_guideline"

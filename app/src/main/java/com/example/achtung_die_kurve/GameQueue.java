@@ -41,7 +41,7 @@ public class GameQueue extends AppCompatActivity {
         final TextView player2 = findViewById(R.id.player2);
         final TextView player3 = findViewById(R.id.player3);
         final TextView player4 = findViewById(R.id.player4);
-
+    //test
         //Spieler-Namen setzen
         switch(myGame.getPlayers().size()){
             case 1:

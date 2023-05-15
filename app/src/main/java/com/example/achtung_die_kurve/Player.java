@@ -35,7 +35,7 @@ public class Player implements Serializable {
     public int getPoints() {
         return points;
     }
-
+//test
     public int getDirectionX() {
         return directionX;
     }

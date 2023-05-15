@@ -21,7 +21,7 @@ public class GameScreen extends AppCompatActivity {
     private Timer timer;
     private float collisionRadius;
     private boolean collision = false;
-
+//test
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
