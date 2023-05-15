@@ -2,11 +2,17 @@ package com.example.achtung_die_kurve;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -18,6 +24,7 @@ public class GameReceiver {
     private int port;
     private DatagramSocket datagramSocket;
     private Game myGame;
+    private boolean closeTCPSocket = false;
 
     public ArrayList<Game> searchGames(){
         ArrayList<Game> foundGames = new ArrayList<>();
@@ -70,6 +77,63 @@ public class GameReceiver {
 
         return foundGames;
     }
+
+    public String getGameInformation(String address){
+        final String[] received = {""};
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 4446);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MulticastSocket multicastSocket = new MulticastSocket(inetSocketAddress);
+                    byte[] buf = new byte[2600];
+                    DatagramPacket dp = new DatagramPacket(buf, buf.length);
+                    multicastSocket.receive(dp);
+                    received[0] = data(buf);
+                    multicastSocket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        new Thread(r).start();
+        return received[0];
+    }
+
+    public void initiateTCPConnection(String address){
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Socket socket = null;
+                DataInputStream inputStream = null;
+                DataOutputStream outputStream = null;
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 800);
+                while (!closeTCPSocket){
+                    try {
+                        socket.bind(inetSocketAddress);
+                        inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                        outputStream = new DataOutputStream(socket.getOutputStream());
+                        String information = inputStream.readUTF();
+                        handleInformation(information);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                try {
+                    assert socket != null;
+                    socket.close();
+                    inputStream.close();
+                    outputStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        new Thread(r).start();
+    }
+
+    public void handleInformation(String information){}
+
 
     public String data(byte[] a)
     {

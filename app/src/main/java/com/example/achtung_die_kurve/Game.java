@@ -10,7 +10,13 @@ public class Game implements Serializable {
     private boolean isPrivate;
 
     private int playerNumber;
-    private String inetAddress;
+
+    private String publicationAddress;
+
+    private String inetAddressTCP;
+
+    private String informationAddress;
+
     private int port;
     private String password;
 
@@ -63,8 +69,28 @@ public class Game implements Serializable {
         return isPrivate;
     }
 
-    public String getInetAddress() {
-        return inetAddress;
+    public String getPublicationAddress() {
+        return publicationAddress;
+    }
+
+    public void setPublicationAddress(String publicationAddress) {
+        this.publicationAddress = publicationAddress;
+    }
+
+    public String getInetAddressTCP() {
+        return inetAddressTCP;
+    }
+
+    public void setInetAddressTCP(String inetAddressTCP) {
+        this.inetAddressTCP = inetAddressTCP;
+    }
+
+    public String getInformationAddress() {
+        return informationAddress;
+    }
+
+    public void setInformationAddress(String informationAddress) {
+        this.informationAddress = informationAddress;
     }
 
     public int getPort() {
