@@ -100,19 +100,22 @@ public class GameReceiver {
         return received[0];
     }
 
-    public void initiateTCPConnection(String address){
+    public void initiateTCPConnection(String address, Player myPlayer){
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 Socket socket = null;
                 DataInputStream inputStream = null;
                 DataOutputStream outputStream = null;
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 800);
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 800 + myGame.getPlayerNumber());
                 while (!closeTCPSocket){
                     try {
                         socket.bind(inetSocketAddress);
                         inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                         outputStream = new DataOutputStream(socket.getOutputStream());
+                        Gson gson = new Gson();
+                        String playerJSONString = gson.toJson(myPlayer);
+                        outputStream.writeUTF(playerJSONString);
                         String information = inputStream.readUTF();
                         handleInformation(information);
                     } catch (IOException e) {
@@ -132,7 +135,28 @@ public class GameReceiver {
         new Thread(r).start();
     }
 
-    public void handleInformation(String information){}
+    public void handleInformation(String information){
+        if(information.toCharArray()[0] == '{'){
+            Gson gson = new Gson();
+            Player player = gson.fromJson(information, Player.class);
+            myGame.addPlayer(player);
+        }else{
+            switch (information){
+                case "start game":
+                    //...
+                    break;
+                case "start":
+                    //...
+                    break;
+                case "stop":
+                    //...
+                    break;
+                case "end game":
+                    //...
+                    break;
+            }
+        }
+    }
 
 
     public String data(byte[] a)

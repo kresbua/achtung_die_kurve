@@ -22,7 +22,7 @@ public class GamePublisher {
     private String inetAddressUDP;
 
     private String inetAddressUDPInformation = "226.0.0.";
-    private String inetAddressTCP;
+    private String inetAddressTCP = "225.0.0.";
     private int tcpPort = 800;
     private Game myGame;
 
@@ -58,6 +58,7 @@ public class GamePublisher {
                     }catch (SocketTimeoutException e){
                         inetAddressUDP = addressPrefix + i;
                         inetAddressUDPInformation += i;
+                        inetAddressTCP +=i;
                         exitStatus[0] = true;
                         break;
                     } catch (IOException e) {
@@ -86,10 +87,11 @@ public class GamePublisher {
                     Socket socket = null;
                     DataInputStream inputStream = null;
                     DataOutputStream outputStream = null;
+                    int i = 1;
                     while (!closeTCPSocket){
                         try {
                             serverSocket = new ServerSocket(tcpPort);
-                            serverSocket.bind(new InetSocketAddress(inetAddressTCP, tcpPort));
+                            serverSocket.bind(new InetSocketAddress(inetAddressTCP, tcpPort + i));
                             socket = serverSocket.accept();
                             inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                             outputStream = new DataOutputStream(socket.getOutputStream());
@@ -97,6 +99,10 @@ public class GamePublisher {
                             Gson gson = new Gson();
                             Player player = gson.fromJson(playerJSONString, Player.class);
                             handlePlayer(socket, inputStream, outputStream, player);
+                            i++;
+                            if(i == 4){
+                                gameIsFull = true;
+                            }
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -184,7 +190,6 @@ public class GamePublisher {
                     }
                 };
                 new Thread(r).start();
-
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
