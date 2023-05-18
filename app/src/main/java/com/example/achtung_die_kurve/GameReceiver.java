@@ -143,7 +143,7 @@ public class GameReceiver {
             @Override
             public void run() {
                 MulticastSocket multicastSocket = null;
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 1990);
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 4446);
                     try {
                         multicastSocket = new MulticastSocket();
                         byte[] buf;

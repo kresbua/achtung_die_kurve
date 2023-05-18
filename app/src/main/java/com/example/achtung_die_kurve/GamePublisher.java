@@ -210,18 +210,24 @@ public class GamePublisher {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                try {
-                    MulticastSocket multicastSocket = new MulticastSocket(inetSocketAddress);
-                    byte[] buf = new byte[2600];
-                    DatagramPacket dp = new DatagramPacket(buf, buf.length);
-                    multicastSocket.receive(dp);
-                    Gson gson = new Gson();
-                    newPlayer[0] = gson.fromJson(data(buf), Player.class);
-                    multicastSocket.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                MulticastSocket multicastSocket = null;
+                while (true){
+                    try {
+                        multicastSocket = new MulticastSocket(inetSocketAddress);
+                        byte[] buf = new byte[2600];
+                        DatagramPacket dp = new DatagramPacket(buf, buf.length);
+                        multicastSocket.receive(dp);
+                        Gson gson = new Gson();
+                        if(data(buf).length() > 0){
+                            newPlayer[0] = gson.fromJson(data(buf), Player.class);
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
+                //multicastSocket.close();
             }
+
         };
         new Thread(r).start();
         return newPlayer[0];
