@@ -109,8 +109,10 @@ public class GameReceiver {
                 DataInputStream inputStream = null;
                 DataOutputStream outputStream = null;
                 InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 1990 + myGame.getPlayerNumber());
+                System.out.println("Port: " + (1990 + myGame.getPlayerNumber()));
                 while (!closeTCPSocket){
                     try {
+                        socket = new Socket();
                         socket.bind(inetSocketAddress);
                         inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                         outputStream = new DataOutputStream(socket.getOutputStream());

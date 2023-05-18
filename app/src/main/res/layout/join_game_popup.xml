@@ -126,41 +126,6 @@
             android:background="@drawable/custom_table_layout"
             android:isScrollContainer="true"
             android:stretchColumns="*">
-
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_tablerow"
-                android:paddingRight="2dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:autoSizeTextType="uniform"
-                    android:fontFamily="@font/retro_gaming"
-                    android:gravity="center|center_vertical"
-                    android:text="Placeholde"
-                    android:textColor="@color/neon_blue" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:autoSizeTextType="uniform"
-                    android:fontFamily="@font/retro_gaming"
-                    android:gravity="center|center_vertical"
-                    android:text="private"
-                    android:textColor="@color/neon_blue" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:autoSizeTextType="uniform"
-                    android:fontFamily="@font/retro_gaming"
-                    android:gravity="center|center_vertical"
-                    android:text="1/4"
-                    android:textColor="@color/neon_blue" />
-
-            </TableRow>
         </TableLayout>
 
     </ScrollView>
