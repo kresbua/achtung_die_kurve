@@ -100,7 +100,7 @@ public class GameReceiver {
         return received[0];
     }
 
-    public void initiateTCPConnection(String address, Player myPlayer, Game game){
+    /*public void initiateTCPConnection(String address, Player myPlayer, Game game){
         myGame = game;
         Runnable r = new Runnable() {
             @Override
@@ -133,6 +133,29 @@ public class GameReceiver {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            }
+        };
+        new Thread(r).start();
+    }*/
+    public void sendPlayer(String address, Player myPlayer, Game game) {
+        myGame = game;
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                MulticastSocket multicastSocket = null;
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 1990);
+                    try {
+                        multicastSocket = new MulticastSocket();
+                        byte[] buf;
+                        String jsonInString = new Gson().toJson(myPlayer);
+                        buf = jsonInString.getBytes();
+                        DatagramPacket dp = new DatagramPacket(buf, buf.length, inetSocketAddress);
+                        multicastSocket.send(dp);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                assert multicastSocket != null;
+                multicastSocket.close();
             }
         };
         new Thread(r).start();

@@ -126,6 +126,8 @@ public class GamePublisher {
         }
     }
 
+
+
     public void handlePlayer(Socket socket, DataInputStream inputStream, DataOutputStream outputStream, Player player){
         Runnable r = new Runnable() {
             @Override
@@ -200,6 +202,29 @@ public class GamePublisher {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public Player getPlayer(){
+        final Player[] newPlayer = new Player[1];
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(inetAddressTCP, 4446);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MulticastSocket multicastSocket = new MulticastSocket(inetSocketAddress);
+                    byte[] buf = new byte[2600];
+                    DatagramPacket dp = new DatagramPacket(buf, buf.length);
+                    multicastSocket.receive(dp);
+                    Gson gson = new Gson();
+                    newPlayer[0] = gson.fromJson(data(buf), Player.class);
+                    multicastSocket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        new Thread(r).start();
+        return newPlayer[0];
     }
 
     public void sendGameInformation(String information){

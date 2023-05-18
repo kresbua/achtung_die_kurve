@@ -469,7 +469,8 @@ public class StartScreen extends AppCompatActivity {
         for (int i = 0; i < tableRowsNumber; i++){
             if(availableGames.getChildAt(i).getAlpha() == 0.6f){
                 GameReceiver gameReceiver = new GameReceiver();
-                gameReceiver.initiateTCPConnection(foundGames.get(i).getInetAddressTCP(), myPlayer, foundGames.get(i));
+                gameReceiver.sendPlayer(foundGames.get(i).getInetAddressTCP(), myPlayer, foundGames.get(i));
+                //gameReceiver.initiateTCPConnection(foundGames.get(i).getInetAddressTCP(), myPlayer, foundGames.get(i));
                 Intent intent = new Intent(this, GameQueue.class);
                 intent.putExtra("myPlayer", myPlayer);
                 intent.putExtra("myGame", foundGames.get(i));

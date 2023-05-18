@@ -43,7 +43,7 @@ public class GameQueue extends AppCompatActivity {
             //Game für andere publishen
             GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
             gamePublisher.startPublishingGame();
-            gamePublisher.launchTCPServer();
+            myGame.addPlayer(gamePublisher.getPlayer());
 
             //Items + Booleans zur Hashmap hinzufügen
             myGame.getItems().put("fast_slow", true);
