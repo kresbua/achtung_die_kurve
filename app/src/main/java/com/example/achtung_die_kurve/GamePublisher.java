@@ -59,6 +59,8 @@ public class GamePublisher {
                         inetAddressUDP = addressPrefix + i;
                         inetAddressUDPInformation += i;
                         inetAddressTCP +=i;
+                        myGame.setInetAddressTCP(inetAddressTCP);
+                        myGame.setInformationAddress(inetAddressUDPInformation);
                         exitStatus[0] = true;
                         break;
                     } catch (IOException e) {

@@ -100,7 +100,8 @@ public class GameReceiver {
         return received[0];
     }
 
-    public void initiateTCPConnection(String address, Player myPlayer){
+    public void initiateTCPConnection(String address, Player myPlayer, Game game){
+        myGame = game;
         Runnable r = new Runnable() {
             @Override
             public void run() {
