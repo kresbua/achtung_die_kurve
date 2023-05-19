@@ -149,8 +149,10 @@ public class GameReceiver {
                         byte[] buf;
                         String jsonInString = new Gson().toJson(myPlayer);
                         buf = jsonInString.getBytes();
-                        DatagramPacket dp = new DatagramPacket(buf, buf.length, inetSocketAddress);
-                        multicastSocket.send(dp);
+                        for(int i = 0; i < 10; i++){
+                            DatagramPacket dp = new DatagramPacket(buf, buf.length, inetSocketAddress);
+                            multicastSocket.send(dp);
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

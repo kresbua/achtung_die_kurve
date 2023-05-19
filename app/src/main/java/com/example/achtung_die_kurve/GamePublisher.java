@@ -211,7 +211,6 @@ public class GamePublisher {
             @Override
             public void run() {
                 MulticastSocket multicastSocket = null;
-                while (true){
                     try {
                         multicastSocket = new MulticastSocket(inetSocketAddress);
                         byte[] buf = new byte[2600];
@@ -226,10 +225,15 @@ public class GamePublisher {
                     }
                 }
                 //multicastSocket.close();
-            }
 
         };
-        new Thread(r).start();
+        Thread t = new Thread(r);
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return newPlayer[0];
     }
 
