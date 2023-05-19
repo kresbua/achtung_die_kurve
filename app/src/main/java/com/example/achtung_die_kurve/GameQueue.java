@@ -43,25 +43,17 @@ public class GameQueue extends AppCompatActivity {
         final TextView player2 = findViewById(R.id.player2);
         final TextView player3 = findViewById(R.id.player3);
         final TextView player4 = findViewById(R.id.player4);
+        final TextView howMuchPlayers = findViewById(R.id.players);
 
-        //Spieler-Namen setzen
-        addPlayerToScreen(myPlayer, host, player2, player3, player4);
+
 
         if(myPlayer.isHost()){
             //Spieler dem Spiel hinzufügen
             myGame.addPlayer(myPlayer);
+            myPlayer.setPlayerNumber(myGame.getPlayers().size());
             //Game für andere publishen
             GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
             gamePublisher.startPublishingGame();
-            Runnable r = new Runnable() {
-                @Override
-                public void run() {
-                    Player player = gamePublisher.getPlayer();
-                    myGame.addPlayer(player);
-                    addPlayerToScreen(player, host, player2, player3, player4);
-                }
-            };
-            new Thread(r).start();
 
             //Items + Booleans zur Hashmap hinzufügen
             myGame.getItems().put("fast_slow", true);
@@ -77,14 +69,30 @@ public class GameQueue extends AppCompatActivity {
             myGame.getAvailableColors().put("#FF1212", true);
             myGame.getAvailableColors().put("#FF06FB", true);
             myGame.getAvailableColors().put("#006CFF", true);
+
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    Player player = gamePublisher.getPlayer();
+                    System.out.println(player.getUsername());
+                    myGame.addPlayer(player);
+                    player.setPlayerNumber(myGame.getPlayers().size());
+                    howMuchPlayers.setText("Players: " + myGame.getPlayers().size() + "/4");
+                    addPlayerToScreen(player, host, player2, player3, player4);
+                }
+            };
+            new Thread(r).start();
+        }else{
+            //muss noch überlegt werden, ob das immer funktioniert
+            myPlayer.setPlayerNumber(myGame.getPlayers().size());
         }
 
-        //muss noch überlegt werden, ob das immer funktioniert
-        myPlayer.setPlayerNumber(myGame.getPlayers().size());
-
         //Spielercounter aktualisieren
-        final TextView howMuchPlayers = findViewById(R.id.players);
         howMuchPlayers.setText("Players: " + myGame.getPlayers().size() + "/4");
+
+        //Spieler-Namen setzen
+        addPlayerToScreen(myPlayer, host, player2, player3, player4);
+
 
         //Dropdown Menü holen
         final Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);
@@ -134,14 +142,14 @@ public class GameQueue extends AppCompatActivity {
         start.setOnClickListener(view -> onStartClick());
     }
 
-    public void setUsernameAndColor(TextView textView){
-        textView.setText(myPlayer.getUsername());
+    public void setUsernameAndColor(Player player, TextView textView){
+        textView.setText(player.getUsername());
         for (Map.Entry<String, Boolean> entry : myGame.getAvailableColors().entrySet()) {
             if (entry.getValue()) {
                 GradientDrawable backgroundGradient = (GradientDrawable) textView.getBackground();
                 backgroundGradient.setStroke(2, Color.parseColor(entry.getKey()));
                 textView.setTextColor(Color.parseColor(entry.getKey()));
-                myPlayer.setColor(Color.parseColor(entry.getKey()));
+                player.setColor(Color.parseColor(entry.getKey()));
 
                 //Farbe als besetzt markieren
                 myGame.getAvailableColors().put(entry.getKey(), false);
@@ -203,19 +211,19 @@ public class GameQueue extends AppCompatActivity {
         }
     }
 
-    public void addPlayerToScreen(Player myPlayer, TextView host, TextView player2, TextView player3, TextView player4){
-        switch (myPlayer.getPlayerNumber()){
+    public void addPlayerToScreen(Player player, TextView host, TextView player2, TextView player3, TextView player4){
+        switch (player.getPlayerNumber()){
             case 1:
-                setUsernameAndColor(host);
+                setUsernameAndColor(player, host);
                 break;
             case 2:
-                setUsernameAndColor(player2);
+                setUsernameAndColor(player, player2);
                 break;
             case 3:
-                setUsernameAndColor(player3);
+                setUsernameAndColor(player, player3);
                 break;
             case 4:
-                setUsernameAndColor(player4);
+                setUsernameAndColor(player, player4);
                 break;
         }
     }

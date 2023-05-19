@@ -206,26 +206,28 @@ public class GamePublisher {
 
     public Player getPlayer(){
         final Player[] newPlayer = new Player[1];
-        InetSocketAddress inetSocketAddress = new InetSocketAddress(inetAddressTCP, 4446);
+
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 MulticastSocket multicastSocket = null;
-                    try {
-                        multicastSocket = new MulticastSocket(inetSocketAddress);
-                        byte[] buf = new byte[2600];
-                        DatagramPacket dp = new DatagramPacket(buf, buf.length);
-                        multicastSocket.receive(dp);
-                        Gson gson = new Gson();
-                        if(data(buf).length() > 0){
-                            newPlayer[0] = gson.fromJson(data(buf), Player.class);
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                try {
+                    InetAddress inetAddress = InetAddress.getByName(inetAddressTCP);
+                    multicastSocket = new MulticastSocket(4446);
+                    multicastSocket.joinGroup(inetAddress);
+                    byte[] buf = new byte[2600];
+                    DatagramPacket dp = new DatagramPacket(buf, buf.length);
+                    multicastSocket.receive(dp);
+                    System.out.println("--------RECEIVED----------");
+                    Gson gson = new Gson();
+                    if(data(buf).length() > 0){
+                        newPlayer[0] = gson.fromJson(data(buf), Player.class);
                     }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
+            }
                 //multicastSocket.close();
-
         };
         Thread t = new Thread(r);
         t.start();
