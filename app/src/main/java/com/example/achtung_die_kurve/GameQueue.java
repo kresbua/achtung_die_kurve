@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Map;
 
 public class GameQueue extends AppCompatActivity {
@@ -36,17 +38,27 @@ public class GameQueue extends AppCompatActivity {
         //Game-Objekt holen
         myGame = (Game) intent.getSerializableExtra("myGame");
 
+        //Spieler-Textviews holen
+        final TextView host = findViewById(R.id.player1);
+        final TextView player2 = findViewById(R.id.player2);
+        final TextView player3 = findViewById(R.id.player3);
+        final TextView player4 = findViewById(R.id.player4);
+
+        //Spieler-Namen setzen
+        addPlayerToScreen(myPlayer, host, player2, player3, player4);
+
         if(myPlayer.isHost()){
             //Spieler dem Spiel hinzufügen
             myGame.addPlayer(myPlayer);
-
             //Game für andere publishen
             GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
             gamePublisher.startPublishingGame();
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    myGame.addPlayer(gamePublisher.getPlayer());
+                    Player player = gamePublisher.getPlayer();
+                    myGame.addPlayer(player);
+                    addPlayerToScreen(player, host, player2, player3, player4);
                 }
             };
             new Thread(r).start();
@@ -73,28 +85,6 @@ public class GameQueue extends AppCompatActivity {
         //Spielercounter aktualisieren
         final TextView howMuchPlayers = findViewById(R.id.players);
         howMuchPlayers.setText("Players: " + myGame.getPlayers().size() + "/4");
-
-        //Spieler-Textviews holen
-        final TextView host = findViewById(R.id.player1);
-        final TextView player2 = findViewById(R.id.player2);
-        final TextView player3 = findViewById(R.id.player3);
-        final TextView player4 = findViewById(R.id.player4);
-
-        //Spieler-Namen setzen
-        switch (myPlayer.getPlayerNumber()){
-            case 1:
-                setUsernameAndColor(host);
-                break;
-            case 2:
-                setUsernameAndColor(player2);
-                break;
-            case 3:
-                setUsernameAndColor(player3);
-                break;
-            case 4:
-                setUsernameAndColor(player4);
-                break;
-        }
 
         //Dropdown Menü holen
         final Spinner points_spinner = (Spinner) findViewById(R.id.points_spinner);
@@ -210,6 +200,23 @@ public class GameQueue extends AppCompatActivity {
                     }
                     break;
             }
+        }
+    }
+
+    public void addPlayerToScreen(Player myPlayer, TextView host, TextView player2, TextView player3, TextView player4){
+        switch (myPlayer.getPlayerNumber()){
+            case 1:
+                setUsernameAndColor(host);
+                break;
+            case 2:
+                setUsernameAndColor(player2);
+                break;
+            case 3:
+                setUsernameAndColor(player3);
+                break;
+            case 4:
+                setUsernameAndColor(player4);
+                break;
         }
     }
 
