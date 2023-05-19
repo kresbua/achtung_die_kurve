@@ -145,8 +145,6 @@ public class GameQueue extends AppCompatActivity {
     }
 
     public void setUsernameAndColor(TextView textView){
-        System.out.println("Bevor Farbe auf TextView gesetzt: " + myGame.getAvailableColors());
-        System.out.println("Bevor Farbe auf TextView gesetzt: " + myPlayer.getColor());
         textView.setText(myPlayer.getUsername());
         for (Map.Entry<String, Boolean> entry : myGame.getAvailableColors().entrySet()) {
             if (entry.getValue()) {
@@ -160,8 +158,6 @@ public class GameQueue extends AppCompatActivity {
                 break;
             }
         }
-        System.out.println("Nach Farbe auf TextView gesetzt: " + myGame.getAvailableColors());
-        System.out.println("Nach Farbe auf TextView gesetzt: " + myPlayer.getColor());
     }
 
     private void onItemClick(TextView item){
@@ -218,8 +214,6 @@ public class GameQueue extends AppCompatActivity {
     }
 
     private void setColor(String stringColor){
-        System.out.println("Bevor Farbe geändert: " + myGame.getAvailableColors());
-        System.out.println("Bevor Farbe geändert: " + myPlayer.getColor());
         if(myGame.getAvailableColors().get(stringColor)){
 
             //Farbe als besetzt markieren
@@ -254,8 +248,6 @@ public class GameQueue extends AppCompatActivity {
             textView.setTextColor(color);
             myPlayer.setColor(color);
         }
-        System.out.println("Nach Farbe geändert: " + myGame.getAvailableColors());
-        System.out.println("nach Farbe geändert: " + myPlayer.getColor());
     }
 
     private void onStartClick(){

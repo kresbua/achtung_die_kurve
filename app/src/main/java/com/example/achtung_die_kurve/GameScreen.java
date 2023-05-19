@@ -21,7 +21,8 @@ public class GameScreen extends AppCompatActivity {
     private Timer timer;
     private float collisionRadius;
     private boolean collision = false;
-//test
+    private boolean gameIsStopped = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -43,53 +44,30 @@ public class GameScreen extends AppCompatActivity {
         final TextView player4_points = findViewById(R.id.player4_points);
 
         //Punkteanzeigen text setzen
-        if(myPlayer.isHost()){
-            player1_points.setText(myPlayer.getUsername() + ":" + myPlayer.getPoints());
-            player1_points.setTextColor(myPlayer.getColor());
-        }else{
-            //to be continued
+        switch (myPlayer.getPlayerNumber()){
+            case 1:
+                setUsernamePointsAndColor(player1_points);
+                break;
+            case 2:
+                setUsernamePointsAndColor(player2_points);
+                break;
+            case 3:
+                setUsernamePointsAndColor(player3_points);
+                break;
+            case 4:
+                setUsernamePointsAndColor(player4_points);
+                break;
         }
 
+        //Links Rechts Buttons holen + ClickListener
         Button left = findViewById(R.id.left);
         Button right = findViewById(R.id.right);
+        right.setOnClickListener(view -> onRightClick());
+        left.setOnClickListener(view -> onLeftClick());
 
-        right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myPlayer.getDirectionX() >= 0 && myPlayer.getDirectionY() < 0) {
-                    myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
-                    myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
-                } else if (myPlayer.getDirectionX() > 0 && myPlayer.getDirectionY() >= 0) {
-                    myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
-                    myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
-                } else if (myPlayer.getDirectionX() <= 0 && myPlayer.getDirectionY() > 0) {
-                    myPlayer.setDirectionX(myPlayer.getDirectionX()-2);//hier -
-                    myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
-                } else {
-                    myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
-                    myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
-                }
-            }
-        });
-
-        left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myPlayer.getDirectionX() <= 0 && myPlayer.getDirectionY() < 0) {
-                    myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
-                    myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
-                } else if (myPlayer.getDirectionX() < 0 && myPlayer.getDirectionY() >= 0) {
-                    myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
-                    myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
-                } else if (myPlayer.getDirectionX() >= 0 && myPlayer.getDirectionY() > 0) {
-                    myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
-                    myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
-                } else {
-                    myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
-                    myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
-                }
-            }
-        });
+        //Stop button holen + Clicklistener
+        Button stop = findViewById(R.id.stop);
+        stop.setOnClickListener(view -> onStopClick());
 
         canvasView = findViewById(R.id.canvas);
         canvasView.setPaintColor(myPlayer.getColor());
@@ -103,57 +81,58 @@ public class GameScreen extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        float posX = myPlayer.getCurrentX() + myPlayer.getDirectionX();
-                        float posY = myPlayer.getCurrentY() + myPlayer.getDirectionY();
+                        if(!gameIsStopped){
+                            float posX = myPlayer.getCurrentX() + myPlayer.getDirectionX();
+                            float posY = myPlayer.getCurrentY() + myPlayer.getDirectionY();
 
-                        drawPlayerCoordinates();
-                        canvasView.addCircle(posX, posY);
-                        myPlayer.setCurrentY((int) posY);
-                        myPlayer.setCurrentX((int) posX);
-
-                        //Kollisionserkennung mit den Rändern
-                        if (myPlayer.getCurrentY() <= myPlayer.getCircleSize()/2 + 5) {
-                            collision = true;
-                        } else if (myPlayer.getCurrentY() >= canvasView.getHeight() - myPlayer.getCircleSize()/2 - 7) {
-                            collision = true;
-                        } else if (myPlayer.getCurrentX() >= canvasView.getWidth() - myPlayer.getCircleSize()/2 - 7) {
-                            collision = true;
-                        } else if (myPlayer.getCurrentX() <= myPlayer.getCircleSize()/2 + 7) {
-                            collision = true;
-                        }
-
-                        //Kollisionserkennung mit sich selbst
-                        PointF currentPoint = new PointF(myPlayer.getCurrentX(), myPlayer.getCurrentY());
-                        float collisionRadius = myPlayer.getCircleSize() / 2.0f;
-
-                        int numPointsToCheck = Math.max(0, myPlayer.getPointsXY().size() - 2); // Anzahl der Punkte, die überprüft werden sollen
-
-                        for (int i = 0; i < numPointsToCheck; i++) {
-                            PointF point = myPlayer.getPointsXY().get(i);
-                            float distanceX = Math.abs(currentPoint.x - point.x);
-                            float distanceY = Math.abs(currentPoint.y - point.y);
-
-                            if (distanceX < collisionRadius + myPlayer.getCircleSize() && distanceY < collisionRadius + myPlayer.getCircleSize() && !isCloseToLastTwoPoints(currentPoint, myPlayer.getPointsXY())) {
-                                // Kollision mit sich selbst erkannt
-                                collision = true;
-                                break;
-                            }
-                        }
-
-                        myPlayer.addPoint(currentPoint);
-
-                        if(collision){
+                            drawPlayerCoordinates();
                             canvasView.addCircle(posX, posY);
-                            canvasView.clearCanvas();
-                            myPlayer.getPointsXY().clear();
-                            myPlayer.setCurrentX(200);
-                            myPlayer.setCurrentY(800);
-                            myPlayer.setDirectionX(0);
-                            myPlayer.setDirectionY(-10);
-                            collision = false;
-                        }
+                            myPlayer.setCurrentY((int) posY);
+                            myPlayer.setCurrentX((int) posX);
 
-                        System.out.println("Direction X: " + myPlayer.getDirectionX() + " DirectionY: " + myPlayer.getDirectionY());
+                            //Kollisionserkennung mit den Rändern
+                            if (myPlayer.getCurrentY() <= myPlayer.getCircleSize()/2 + 5) {
+                                collision = true;
+                            } else if (myPlayer.getCurrentY() >= canvasView.getHeight() - myPlayer.getCircleSize()/2 - 7) {
+                                collision = true;
+                            } else if (myPlayer.getCurrentX() >= canvasView.getWidth() - myPlayer.getCircleSize()/2 - 7) {
+                                collision = true;
+                            } else if (myPlayer.getCurrentX() <= myPlayer.getCircleSize()/2 + 7) {
+                                collision = true;
+                            }
+
+                            //Kollisionserkennung mit sich selbst
+                            PointF currentPoint = new PointF(myPlayer.getCurrentX(), myPlayer.getCurrentY());
+                            float collisionRadius = myPlayer.getCircleSize() / 2.0f;
+
+                            int numPointsToCheck = Math.max(0, myPlayer.getPointsXY().size() - 2); // Anzahl der Punkte, die überprüft werden sollen
+
+                            for (int i = 0; i < numPointsToCheck; i++) {
+                                PointF point = myPlayer.getPointsXY().get(i);
+                                float distanceX = Math.abs(currentPoint.x - point.x);
+                                float distanceY = Math.abs(currentPoint.y - point.y);
+
+                                if (distanceX < collisionRadius + myPlayer.getCircleSize() && distanceY < collisionRadius + myPlayer.getCircleSize() && !isCloseToLastTwoPoints(currentPoint, myPlayer.getPointsXY())) {
+                                    // Kollision mit sich selbst erkannt
+                                    collision = true;
+                                    break;
+                                }
+                            }
+
+                            myPlayer.addPoint(currentPoint);
+
+                            if(collision){
+                                canvasView.addCircle(posX, posY);
+                                canvasView.clearCanvas();
+                                myPlayer.getPointsXY().clear();
+                                myPlayer.setCurrentX(200);
+                                myPlayer.setCurrentY(800);
+                                myPlayer.setDirectionX(0);
+                                myPlayer.setDirectionY(-10);
+                                collision = false;
+                            }
+                            System.out.println("Direction X: " + myPlayer.getDirectionX() + " DirectionY: " + myPlayer.getDirectionY());
+                        }
                     }
                 });
             }
@@ -189,6 +168,54 @@ public class GameScreen extends AppCompatActivity {
             float posX = player.getCurrentX();
             float posY = player.getCurrentY();
             canvasView.addCircle(posX, posY);
+        }
+    }
+
+    private void setUsernamePointsAndColor(TextView textView){
+        textView.setText(myPlayer.getUsername() + ":" + myPlayer.getPoints());
+        textView.setTextColor(myPlayer.getColor());
+    }
+
+    private void onRightClick(){
+        if (myPlayer.getDirectionX() >= 0 && myPlayer.getDirectionY() < 0) {
+            myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
+            myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
+        } else if (myPlayer.getDirectionX() > 0 && myPlayer.getDirectionY() >= 0) {
+            myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
+            myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
+        } else if (myPlayer.getDirectionX() <= 0 && myPlayer.getDirectionY() > 0) {
+            myPlayer.setDirectionX(myPlayer.getDirectionX()-2);//hier -
+            myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
+        } else {
+            myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
+            myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
+        }
+    }
+
+    private void onLeftClick(){
+        if (myPlayer.getDirectionX() <= 0 && myPlayer.getDirectionY() < 0) {
+            myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
+            myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
+        } else if (myPlayer.getDirectionX() < 0 && myPlayer.getDirectionY() >= 0) {
+            myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
+            myPlayer.setDirectionY(myPlayer.getDirectionY()+2);
+        } else if (myPlayer.getDirectionX() >= 0 && myPlayer.getDirectionY() > 0) {
+            myPlayer.setDirectionX(myPlayer.getDirectionX()+2);
+            myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
+        } else {
+            myPlayer.setDirectionX(myPlayer.getDirectionX()-2);
+            myPlayer.setDirectionY(myPlayer.getDirectionY()-2);
+        }
+    }
+
+    private void onStopClick(){
+        //nur Host darf Spiel starten und stoppen
+        if(myPlayer.isHost()){
+            if(gameIsStopped){
+                gameIsStopped = false;
+            }else{
+                gameIsStopped = true;
+            }
         }
     }
 
