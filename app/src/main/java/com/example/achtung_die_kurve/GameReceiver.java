@@ -142,22 +142,23 @@ public class GameReceiver {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                MulticastSocket multicastSocket = null;
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(address, 4446);
+                DatagramSocket datagramSocket = null;
                     try {
-                        multicastSocket = new MulticastSocket();
+                        InetAddress inetAdress = InetAddress.getByName(address);
+                        datagramSocket = new DatagramSocket();
                         byte[] buf;
                         String jsonInString = new Gson().toJson(myPlayer);
                         buf = jsonInString.getBytes();
-                        for(int i = 0; i < 10; i++){
-                            DatagramPacket dp = new DatagramPacket(buf, buf.length, inetSocketAddress);
-                            multicastSocket.send(dp);
+                        for(int i = 0; i < 1000; i++){
+                            DatagramPacket dp = new DatagramPacket(buf, buf.length, inetAdress, 4446);
+                            datagramSocket.send(dp);
+                            System.out.println("SEND: Adress: " + inetAdress + "Player: " + jsonInString);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                assert multicastSocket != null;
-                multicastSocket.close();
+                assert datagramSocket != null;
+                datagramSocket.close();
             }
         };
         new Thread(r).start();
@@ -185,7 +186,6 @@ public class GameReceiver {
             }
         }
     }
-
 
     public String data(byte[] a)
     {
