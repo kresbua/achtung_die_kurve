@@ -1,11 +1,15 @@
 package com.example.achtung_die_kurve;
 
+import android.app.Activity;
+import android.content.Context;
+
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -18,11 +22,13 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-public class GameReceiver {
+public class GameReceiver implements Serializable {
 
     private String inetAddress;
     private int port;
     private DatagramSocket datagramSocket;
+    private Context gameQueueContext;
+    boolean gameEnded = false;
     private Game myGame;
     private boolean closeTCPSocket = false;
 
@@ -100,6 +106,29 @@ public class GameReceiver {
         return received[0];
     }
 
+    public void getImportantInformation(String address, Context context){
+        gameQueueContext = context;
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InetAddress inetAddress = InetAddress.getByName(address);
+                    MulticastSocket multicastSocket = new MulticastSocket(446);
+                    byte[] buf = new byte[2600];
+                    while (!gameEnded){
+                        DatagramPacket dp = new DatagramPacket(buf, buf.length);
+                        multicastSocket.receive(dp);
+                        handleInformation(data(buf));
+                    }
+                    multicastSocket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        new Thread(r).start();
+    }
+
     /*public void initiateTCPConnection(String address, Player myPlayer, Game game){
         myGame = game;
         Runnable r = new Runnable() {
@@ -152,7 +181,6 @@ public class GameReceiver {
                         for(int i = 0; i < 1000; i++){
                             DatagramPacket dp = new DatagramPacket(buf, buf.length, inetAdress, 4446);
                             datagramSocket.send(dp);
-                            System.out.println("SEND: Adress: " + inetAdress + "Player: " + jsonInString);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -172,7 +200,7 @@ public class GameReceiver {
         }else{
             switch (information){
                 case "start game":
-                    //...
+                    ((Activity) gameQueueContext).setContentView(R.layout.game_screen);
                     break;
                 case "start":
                     //...

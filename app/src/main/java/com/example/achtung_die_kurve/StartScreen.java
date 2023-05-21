@@ -474,6 +474,7 @@ public class StartScreen extends AppCompatActivity {
                 Intent intent = new Intent(this, GameQueue.class);
                 intent.putExtra("myPlayer", myPlayer);
                 intent.putExtra("myGame", foundGames.get(i));
+                intent.putExtra("gameReceiver", gameReceiver);
                 startActivity(intent);
                 setContentView(R.layout.game_queue);
                 popupWindow.dismiss();

@@ -23,6 +23,10 @@ public class GameScreen extends AppCompatActivity {
     private boolean collision = false;
     private boolean gameIsStopped = false;
 
+    private GamePublisher gamePublisher;
+    private GameReceiver gameReceiver;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -84,7 +88,7 @@ public class GameScreen extends AppCompatActivity {
                         if(!gameIsStopped){
                             float posX = myPlayer.getCurrentX() + myPlayer.getDirectionX();
                             float posY = myPlayer.getCurrentY() + myPlayer.getDirectionY();
-
+                            gamePublisher.sendGameInformation(myPlayer.getDirectionX() + ";" + myPlayer.getDirectionY(), myGame.getInformationAddress());
                             drawPlayerCoordinates();
                             canvasView.addCircle(posX, posY);
                             myPlayer.setCurrentY((int) posY);

@@ -45,7 +45,10 @@ public class GameQueue extends AppCompatActivity {
         final TextView player4 = findViewById(R.id.player4);
         final TextView howMuchPlayers = findViewById(R.id.players);
 
-
+        if(!myPlayer.isHost()){
+            GameReceiver gameReceiver = (GameReceiver) intent.getSerializableExtra("gameReceiver");
+            gameReceiver.getImportantInformation(myGame.getInetAddressTCP(), this);
+        }
 
         if(myPlayer.isHost()){
             //Spieler dem Spiel hinzufügen
@@ -54,6 +57,7 @@ public class GameQueue extends AppCompatActivity {
             //Game für andere publishen
             GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
             gamePublisher.startPublishingGame();
+            myGame = gamePublisher.setAddresses(myGame);
 
             //Items + Booleans zur Hashmap hinzufügen
             myGame.getItems().put("fast_slow", true);
@@ -265,6 +269,43 @@ public class GameQueue extends AppCompatActivity {
         }
     }
 
+    private void setColor(String stringColor, Player player){
+        if(myGame.getAvailableColors().get(stringColor)){
+
+            //Farbe als besetzt markieren
+            myGame.getAvailableColors().put(stringColor, false);
+
+            int color = Color.parseColor(stringColor);
+            TextView textView = null;
+
+            switch(player.getPlayerNumber()){
+                case 1:
+                    textView = findViewById(R.id.player1);
+                    break;
+                case 2:
+                    textView = findViewById(R.id.player2);
+                    break;
+                case 3:
+                    textView = findViewById(R.id.player3);
+                    break;
+                case 4:
+                    textView = findViewById(R.id.player4);
+                    break;
+            }
+
+            //Farbe, die TextView bis jetzt hatte, wieder freigeben
+            int currentColorInt = player.getColor();
+            String currentColorString = String.format("#%06X", (0xFFFFFF & currentColorInt));
+            myGame.getAvailableColors().put(currentColorString, true);
+
+            //Neue Farbe setzen
+            GradientDrawable backgroundGradient = (GradientDrawable) textView.getBackground();
+            backgroundGradient.setStroke(2, color);
+            textView.setTextColor(color);
+            player.setColor(color);
+        }
+    }
+
     private void onStartClick(){
         //nur der Host kann das Spiel starten
         if(myPlayer.isHost()){
@@ -272,6 +313,8 @@ public class GameQueue extends AppCompatActivity {
             intent.putExtra("myGame", myGame);
             intent.putExtra("myPlayer", myPlayer);
             startActivity(intent);
+            GamePublisher gamePublisher = new GamePublisher(myGame, myPlayer);
+            gamePublisher.sendGameInformation("start game", myGame.getInetAddressTCP());
             setContentView(R.layout.game_screen);
         }
     }

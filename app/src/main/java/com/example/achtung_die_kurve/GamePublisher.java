@@ -80,6 +80,12 @@ public class GamePublisher {
         }
         return exitStatus[0];
     }
+
+    public Game setAddresses(Game game){
+        game.setInetAddressTCP(myGame.getInetAddressTCP());
+        game.setInformationAddress(myGame.getInformationAddress());
+        return game;
+    }
     public void launchTCPServer(){
         if(checkFreeTCPAddresses()){
             Runnable r = new Runnable() {
